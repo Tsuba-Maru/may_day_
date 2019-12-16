@@ -1,23 +1,44 @@
 # -- Table definitions
 
 # --- !Ups
-CREATE TABLE enquete (
-    id int PRIMARY KEY AUTO_INCREMENT,
-    name varchar(32) NOT NULL,
-    gender varchar(6) NOT NULL,
-    message varchar(255) NOT NULL,
-    created_at timestamp default CURRENT_TIMESTAMP() NOT NULL
+
+CREATE TABLE user (
+    userId int PRIMARY KEY AUTO_INCREMENT,
+    userName varchar(32) UNIQUE NOT NULL,
+    password varchar(255) NOT NULL,
+    isActive boolean default TRUE,
+    createdAt timestamp default CURRENT_TIMESTAMP() NOT NULL
+);
+
+CREATE TABLE list (
+    listId int PRIMARY KEY AUTO_INCREMENT,
+    listName varchar(32) NOT NULL,
+    userId int NOT NULL,
+    genreId int NOT NULL
+);
+
+CREATE TABLE link (
+    taskId int NOT NULL,
+    userId int NOT NULL
 );
 
 CREATE TABLE task (
-    id int PRIMARY KEY AUTO_INCREMENT,
-    title varchar(32) NOT NULL,
+    taskId int PRIMARY KEY AUTO_INCREMENT,
+    listId int NOT NULL,
+    name1 varchar(32) NOT NULL,
+    name2 varchar(128),
     description varchar(255),
-    is_done boolean default FALSE,
-    created_at timestamp default CURRENT_TIMESTAMP NOT NULL
+    deadline varchar(10),
+    createdAt timestamp default CURRENT_TIMESTAMP NOT NULL,
+    isDone boolean default FALSE
 );
 
+
 # --- !Downs
-DROP TABLE enquete;
+DROP TABLE user;
+
+DROP TABLE list;
+
+DROP TABLE link;
 
 DROP TABLE task;
