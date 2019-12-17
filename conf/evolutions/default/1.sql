@@ -3,34 +3,34 @@
 # --- !Ups
 
 CREATE TABLE user (
-    userId int PRIMARY KEY AUTO_INCREMENT,
-    userName varchar(32) UNIQUE NOT NULL,
+    user_id int PRIMARY KEY AUTO_INCREMENT,
+    user_name varchar(32) UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    isActive boolean default TRUE,
-    createdAt timestamp default CURRENT_TIMESTAMP() NOT NULL
+    is_active boolean default TRUE,
+    created_at timestamp default CURRENT_TIMESTAMP() NOT NULL
 );
 
 CREATE TABLE list (
-    listId int PRIMARY KEY AUTO_INCREMENT,
-    listName varchar(32) NOT NULL,
-    userId int NOT NULL,
-    genreId int NOT NULL
+    list_id int PRIMARY KEY AUTO_INCREMENT,
+    list_name varchar(32) NOT NULL,
+    user_id int NOT NULL,
+    genre_id int NOT NULL
 );
 
 CREATE TABLE link (
-    taskId int NOT NULL,
-    userId int NOT NULL
+    task_id int NOT NULL,
+    user_id int NOT NULL
 );
 
 CREATE TABLE task (
-    taskId int PRIMARY KEY AUTO_INCREMENT,
-    listId int NOT NULL,
+    task_id int PRIMARY KEY AUTO_INCREMENT,
+    list_id int NOT NULL,
     name1 varchar(32) NOT NULL,
     name2 varchar(128),
     description varchar(255),
     deadline varchar(10),
-    createdAt timestamp default CURRENT_TIMESTAMP NOT NULL,
-    isDone boolean default FALSE
+    created_it timestamp default CURRENT_TIMESTAMP NOT NULL,
+    is_done boolean default FALSE
 );
 
 
