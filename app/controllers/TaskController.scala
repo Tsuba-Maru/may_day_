@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import models.{Task, Tasks, List, Lists}
+import models.{List, Lists, Task, Tasks}
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
 
 @Singleton
@@ -29,11 +29,24 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       deadline    <- param.get("deadline").flatMap(_.headOption)
     } yield {
       tasks.save(Task(listId, name1, name2, description, deadline, false))
-      Redirect("./lists/" + listId).withNewSession
+      Redirect(routes.TaskController.list(listId)).withNewSession
     }).getOrElse[Result](Redirect("./lists/" + listId + "/add"))
   }
 
-  def comp = TODO
+  def comp(taskId: Int, listId: Int) = Action { request =>
+    tasks.findByID(taskId) match {
+      case Some(e) =>
+        var isDone = false
+        if (e.isDone == false) {
+          isDone = true
+        } else {
+          isDone = false
+        }
+        tasks.switchIsDone(taskId, isDone)
+      case None => NotFound(s"No entry for id=${taskId}")
+    }
+    Redirect(routes.TaskController.list(listId)).withNewSession
+  }
 
   def edit = TODO
 

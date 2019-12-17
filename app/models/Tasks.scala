@@ -33,6 +33,10 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     db.run(sql"SELECT task_id, list_id, name1, name2, description, deadline, created_it, is_done FROM #$table WHERE list_id='#$listId'".as[Task])
   )
 
+  def findByID(listId: Int): Option[Task] = Await.result(
+    db.run(sql"SELECT * FROM #$table WHERE lits_id=#$listId".as[Task].headOption)
+  )
+
   def save(task: Task): Int = task match {
     case Task(0, listId, name1, name2, description, deadline, _, isDone) =>
       Await.result(
@@ -45,4 +49,16 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
         )
       )
   }
+
+  /**
+    * 完了状態のみを変える
+    * @param taskId
+    * @param isDone
+    * @return
+    */
+  def switchIsDone(taskId: Int, isDone: Boolean): Int = Await.result(
+    db.run(
+      sqlu"UPDATE #$table SET is_done='#$isDone' WHERE task_id = #$taskId"
+    )
+  )
 }
