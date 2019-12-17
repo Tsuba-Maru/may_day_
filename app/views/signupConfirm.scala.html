@@ -1,0 +1,18 @@
+@*
+* 登録するユーザー情報の確認ページ
+* - 入力された名前とパスワードの平文を表示
+*@
+
+@(user: models.User)(implicit request: RequestHeader)
+
+@import helper._
+
+@register("確認画面", "/signup/complete") {
+<dl>
+    <dt>ユーザー名</dt>
+    <dd>@user.userName</dd>
+    <dt>パスワード</dt>
+    <dd>@user.password</dd>
+</dl>
+<p>以上の内容で登録します</p>
+}
