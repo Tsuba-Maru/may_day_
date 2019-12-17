@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import models.{Task, Tasks, List, Lists}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, ControllerComponents, Result}
 
 @Singleton
 class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerComponents) extends AbstractController(cc) {
@@ -16,7 +16,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
   }
 
   def register(listId: Int) = Action { request =>
-    val genreId = lists.getFromListID.get.genre_id //要変更
+    val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
     Ok(views.html.taskForm(listId, genreId))
   }
 
@@ -26,7 +26,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       name1       <- param.get("name1").flatMap(_.headOption)
       name2       <- param.get("name2").flatMap(_.headOption)
       description <- param.get("description").flatMap(_.headOption)
-      deadline       <- param.get("deadline").flatMap(_.headOption)
+      deadline    <- param.get("deadline").flatMap(_.headOption)
     } yield {
       tasks.save(Task(listId, name1, name2, description, deadline, false))
       Redirect("./lists/" + listId).withNewSession
