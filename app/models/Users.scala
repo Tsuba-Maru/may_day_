@@ -32,7 +32,7 @@ class Users @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     )
   )
 
-  def findByName(userName: String): Option[User] = Await.result(
+  def findByName(userName: String): Option[User] = Await.result(   //名前で検索
     db.run(
       sql"SELECT user_id, user_name, password, is_active, created_at FROM #$table WHERE user_name LIKE '#$userName'"
         .as[User]

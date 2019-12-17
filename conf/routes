@@ -1,4 +1,4 @@
-# User(ユーザー登録、ログイン)
+# User
 GET     /                           controllers.UserController.index
 +nocsrf
 POST    /                           controllers.UserController.index

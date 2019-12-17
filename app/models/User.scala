@@ -7,7 +7,7 @@ import java.sql.Timestamp
   * @param userId      ID
   * @param userName    ユーザー名
   * @param password    パスワード
-  * @param isActive    アクティブ状態
+  * @param isActive    アクティブ状態（falseで退会済み）
   * @param createdAt   作成日時
   */
 case class User(userId: Int, userName: String, password: String, isActive: Boolean, createdAt: Timestamp)

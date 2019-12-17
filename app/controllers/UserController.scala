@@ -48,7 +48,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
       userName <- request.session.get("userName")
       password <- request.session.get("password")
     } yield {
-      users.save(User(userName, utility.Digest.apply(password), true)) //パスワードを暗号化
+      users.save(User(userName, utility.Digest.apply(password), true))
       Redirect("/").withNewSession
     }).getOrElse[Result](Redirect("/"))
   }
