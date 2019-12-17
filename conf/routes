@@ -1,3 +1,15 @@
+# User
+GET     /                           controllers.UserController.index
++nocsrf
+POST    /                           controllers.UserController.index
+GET     /signup                     controllers.UserController.startSignup
+POST    /signup/confirm             controllers.UserController.signup
++nocsrf
+POST    /signup/complete            controllers.UserController.confirmSignup
++nocsrf
+POST    /signin                     controllers.UserController.signin
+
+
 # TodoList
 GET     /                           controllers.TodoListController.index
 

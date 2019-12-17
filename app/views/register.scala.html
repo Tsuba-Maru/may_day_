@@ -1,0 +1,10 @@
+@(title: String, target: String)(content: Html)
+
+@views.html.main(title) {
+<h3>@title</h3>
+<form action="@target" method="POST">
+    @content
+    <input type="submit" value="next">
+</form>
+
+}

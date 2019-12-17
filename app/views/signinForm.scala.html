@@ -1,0 +1,27 @@
+@*
+* 初期ページ
+* - 引数としてメッセージを受け取り画面に表示する
+* - UserController.signinを呼び出す
+* - UserController.startSignupを呼び出す
+*@
+
+
+@(message: String)(implicit request: RequestHeader)
+
+@import helper._
+
+<h1>@message</h1>
+<form action="/signin" method="POST">
+    ユーザー名 <br>
+    <input type="text" name="userName"> <br>
+    パスワード入力 <br>
+    <input type="text" name="password">
+
+    <td><a href="/signin"><input type="submit" value="ログイン"></a></td><br>
+     <br>
+</form>
+
+</form>
+    ↓↓新規登録はこちら↓↓<br>
+    <a href="/signup">新規アカウント登録</a> <br>
+</form>
