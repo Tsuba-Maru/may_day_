@@ -21,7 +21,7 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     * @return
     */
   def list: Seq[Task] = Await.result(
-    db.run(sql"SELECT task_id, list_id, name1, name2, description, deadline, created_it, is_done FROM #$table".as[Task])
+    db.run(sql"SELECT task_id, list_id, name1, name2, description, deadline, created_at, is_done FROM #$table".as[Task])
   )
 
   /**
@@ -30,7 +30,7 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     * @return
     */
   def listFromListID(listId: Int): Seq[Task] = Await.result(
-    db.run(sql"SELECT task_id, list_id, name1, name2, description, deadline, created_it, is_done FROM #$table WHERE list_id='#$listId'".as[Task])
+    db.run(sql"SELECT * FROM #$table WHERE list_id='#$listId'".as[Task])
   )
 
   def findByID(listId: Int): Option[Task] = Await.result(
