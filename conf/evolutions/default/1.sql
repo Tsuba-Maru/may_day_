@@ -29,7 +29,7 @@ CREATE TABLE task (
     name2 varchar(128),
     description varchar(255),
     deadline varchar(10),
-    created_it timestamp default CURRENT_TIMESTAMP NOT NULL,
+    created_at timestamp default CURRENT_TIMESTAMP NOT NULL,
     is_done boolean default FALSE
 );
 
