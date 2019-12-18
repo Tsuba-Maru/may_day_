@@ -17,7 +17,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
 
   def register(listId: Int) = Action { request =>
     val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
-    Ok(views.html.taskForm(listId, genreId))
+    Ok(views.html.taskForm(listId, genreId)(request))
   }
 
   def confirm(listId: Int) = Action { request =>
@@ -33,7 +33,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     }).getOrElse[Result](Redirect("./lists/" + listId + "/add"))
   }
 
-  def comp(taskId: Int, listId: Int) = Action { request =>
+  def comp(taskId: Int, listId: Int) = Action {
     tasks.findByID(taskId) match {
       case Some(e) =>
         var isDone = false
@@ -48,7 +48,18 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     Redirect(routes.TaskController.list(listId)).withNewSession
   }
 
-  def edit = TODO
+  def edit(listId: Int, taskId: Int) = Action { request =>
+    tasks.findByID(taskId) match {
+      case Some(e) => Ok(views.html.editTask(listId, taskId)(request))
+      case None    => NotFound(s"No entry for id=${taskId}")
+    }
+  }
 
-  def delete = TODO
+  def delete(listId: Int, taskId: Int) = Action {
+    tasks.findByID(taskId) match {
+      case Some(e) => tasks.delete(taskId)
+      case None    => NotFound(s"No entry for id=${taskId}")
+    }
+    Redirect(routes.TaskController.list(listId)).withNewSession
+  }
 }
