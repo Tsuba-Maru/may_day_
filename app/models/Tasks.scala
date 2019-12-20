@@ -34,7 +34,7 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
   )
 
   def findByID(listId: Int): Option[Task] = Await.result(
-    db.run(sql"SELECT * FROM #$table WHERE lits_id=#$listId".as[Task].headOption)
+    db.run(sql"SELECT * FROM #$table WHERE list_id=#$listId".as[Task].headOption)
   )
 
   def save(task: Task): Int = task match {
