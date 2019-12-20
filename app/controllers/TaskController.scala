@@ -12,7 +12,8 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     */
   def list(listId: Int) = Action { request =>
     val entries  = tasks.listFromListID(listId)
-    Ok(views.html.list(entries))
+    val genreId  = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
+    Ok(views.html.list(entries, listId, genreId))
   }
 
   def register(listId: Int) = Action { request =>
