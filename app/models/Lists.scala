@@ -28,7 +28,7 @@ class Lists @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     case List(0, list_name, user_id, genre_id) =>
       Await.result(db.run(sqlu"INSERT INTO #$table (list_name, user_id, genre_id) VALUES('#$list_name', '#$user_id', '#$genre_id')"))
     case List(list_id, list_name, user_id, genre_id) =>
-      Await.result(db.run(sqlu"UPDATE #$table SET list_name='#$list_name', user_id=#$user_id, genre_id=#$genre_id"))
+      Await.result(db.run(sqlu"UPDATE #$table SET list_name='#$list_name', user_id=#$user_id, genre_id=#$genre_id WHERE list_id = #$list_id"))
   }
 
 }

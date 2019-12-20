@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import models.{List, Lists}
 
 /**
@@ -12,7 +12,7 @@ class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) ext
 
   def list = Action { request =>
     val entreis = lists.list
-    Ok(views.html.home(entreis)(request))
+    Ok(views.html.home(entreis)(request)).withSession(request.session)
   }
 
   def listRegistration = Action { request =>
@@ -22,8 +22,8 @@ class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) ext
   def register = Action { request =>
     (for {
       param    <- request.body.asFormUrlEncoded
-      listName <- param.get("listName").flatMap(_.headOption)
       userId   <- request.session.get("userId")
+      listName <- param.get("listName").flatMap(_.headOption)
       genreId  <- param.get("genreId").flatMap(_.headOption)
     } yield {
       val list = List(listName, userId.toInt, genreId.toInt)
@@ -31,7 +31,6 @@ class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) ext
       Redirect("/lists").withSession("userId" -> userId)
     }).getOrElse[Result](Redirect("/lists/create"))
   }
-
 
 
 }
