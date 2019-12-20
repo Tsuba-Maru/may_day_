@@ -31,7 +31,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     } yield {
       tasks.save(Task(listId, name1, name2, description, deadline, false))
       Redirect(routes.TaskController.list(listId)).withNewSession
-    }).getOrElse[Result](Redirect("./lists/" + listId + "/add"))
+    }).getOrElse[Result](Redirect("/lists/" + listId + "/add"))
   }
 
   def comp(taskId: Int, listId: Int) = Action {
@@ -54,6 +54,20 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       case Some(e) => Ok(views.html.editTask(listId, taskId)(request))
       case None    => NotFound(s"No entry for id=${taskId}")
     }
+  }
+
+  def update(listId: Int, taskId: Int) = Action { request =>
+    (for {
+      param       <- request.body.asFormUrlEncoded
+      name1       <- param.get("name1").flatMap(_.headOption)
+      name2       <- param.get("name2").flatMap(_.headOption)
+      description <- param.get("description").flatMap(_.headOption)
+      deadline    <- param.get("deadline").flatMap(_.headOption)
+      isDone      <- param.get("isDone").flatMap(_.headOption)
+    } yield {
+      tasks.save(Task(taskId, listId, name1, name2, description, deadline, null, isDone.toBoolean))
+      Redirect(routes.TaskController.list(listId)).withNewSession
+    }).getOrElse[Result](Redirect("/lists/" + listId + "/" + taskId + "edit"))
   }
 
   def delete(listId: Int, taskId: Int) = Action {
