@@ -13,12 +13,12 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
   def list(listId: Int) = Action { request =>
     val entries  = tasks.listFromListID(listId)
     val genreId  = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
-    Ok(views.html.list(entries, listId, genreId))
+    Ok(views.html.list(entries)(genreId)(listId))
   }
 
   def register(listId: Int) = Action { request =>
     val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
-    Ok(views.html.taskForm(listId, genreId)(request))
+    Ok(views.html.taskForm(genreId)(listId))
   }
 
   def confirm(listId: Int) = Action { request =>
@@ -50,8 +50,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
   }
 
   def edit(listId: Int, taskId: Int) = Action { request =>
+    val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
     tasks.findByID(taskId) match {
-      case Some(e) => Ok(views.html.editTask(listId, taskId)(request))
+      case Some(e) => Ok(views.html.editTask(e)(genreId)(listId))
       case None    => NotFound(s"No entry for id=${taskId}")
     }
   }
