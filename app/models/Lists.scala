@@ -31,4 +31,14 @@ class Lists @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
       Await.result(db.run(sqlu"UPDATE #$table SET list_name='#$list_name', user_id=#$user_id, genre_id=#$genre_id WHERE list_id = #$list_id"))
   }
 
+  def findByListId(id: Int): Option[List] = Await.result(
+    db.run(
+      sql"SELECT list_id, list_name, user_id, genre_id FROM #$table WHERE list_id=#$id".as[List].headOption
+    )
+  )
+
+  def deleteList(id: Int): Int = Await.result(
+    db.run(sqlu"DELETE FROM #$table WHERE list.id=#$id")
+  )
+
 }

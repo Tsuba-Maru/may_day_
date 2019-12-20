@@ -32,5 +32,17 @@ class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) ext
     }).getOrElse[Result](Redirect("/lists/create"))
   }
 
+  /*TODO: listの第一引数のtask*/
+  def entry(listId: Int) = Action { request =>
+    lists.findByListId(listId) match {
+      case Some(e) => Ok(views.html.list(tasks)(e.genreId)(listId)).withSession(request.session)
+      case None    => NotFound(s"No entry for id=${listId}")
+    }
+  }
+
+  def delete(listId: Int) = Action { request =>
+    lists.deleteList(listId)
+    Redirect("/lists").withSession(request.session)
+  }
 
 }
