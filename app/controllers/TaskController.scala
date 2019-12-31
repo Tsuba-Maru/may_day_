@@ -16,9 +16,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     Ok(views.html.list(entries)(genreId)(listId))
   }
 
-  def register(listId: Int) = Action { request =>
+  def register(listId: Int) = Action { implicit request =>
     val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
-    Ok(views.html.taskForm(genreId)(listId))
+    Ok(views.html.taskForm(genreId)(listId)(request))
   }
 
   def confirm(listId: Int) = Action { request =>
