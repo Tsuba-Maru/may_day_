@@ -2,13 +2,13 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
-import models.{List, Lists}
+import models.{List, Lists, Tasks}
 
 /**
   * 親リストのコントローラ
   */
 @Singleton
-class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) extends AbstractController(cc) {
+class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerComponents) extends AbstractController(cc) {
 
   def list = Action { request =>
     val entreis = lists.list
@@ -32,10 +32,12 @@ class MotherListController @Inject()(lists: Lists)(cc: ControllerComponents) ext
     }).getOrElse[Result](Redirect("/lists/create"))
   }
 
-  /*TODO: listの第一引数のtask*/
   def entry(listId: Int) = Action { request =>
     lists.findByListId(listId) match {
-      case Some(e) => Ok(views.html.list(tasks)(e.genreId)(listId)).withSession(request.session)
+      case Some(e) => {
+        val task = tasks.findByListId(listId)
+        Ok(views.html.list(task)(e.genreId)(listId)).withSession(request.session)
+      }
       case None    => NotFound(s"No entry for id=${listId}")
     }
   }
