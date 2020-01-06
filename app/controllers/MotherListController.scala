@@ -51,4 +51,15 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
     Redirect("/lists").withSession(request.session)
   }
 
+  def edit(listId: Int) = Action {request =>
+    (for {
+      param    <- request.body.asFormUrlEncoded
+      listName <- param.get("listName").flatMap(_.headOption)
+      userId   <- request.session.get("userId")
+    } yield {
+      lists.editListName(listName)(listId)
+      Redirect(s"/lists/${listId}").withSession("userId" -> userId)
+    }).getOrElse[Result](Redirect("/lists"))
+  }
+
 }

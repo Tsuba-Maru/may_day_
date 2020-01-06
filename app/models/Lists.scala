@@ -45,4 +45,8 @@ class Lists @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     db.run(sqlu"DELETE FROM #$table WHERE list.id=#$id")
   )
 
+  def editListName(listName: String)(listId: Int): Int = Await.result(
+    db.run(sqlu"UPDATE #$table SET list_name='#$listName' WHERE list_id=#$listId")
+  )
+
 }

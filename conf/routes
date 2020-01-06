@@ -4,6 +4,7 @@ GET     /lists/create               controllers.MotherListController.listRegistr
 POST    /lists/create               controllers.MotherListController.register
 GET     /lists/:listId              controllers.MotherListController.entry(listId: Int)
 GET     /lists/:listId/delete       controllers.MotherListController.delete(listId: Int)
+GET     /lists/:listId/edit         controllers.MotherListController.edit(listId: Int)
 
 
 # Resources
