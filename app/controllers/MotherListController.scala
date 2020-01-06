@@ -39,7 +39,7 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
   def entry(listId: Int) = Action { request =>
     lists.findByListId(listId) match {
       case Some(e) => {
-        val task = tasks.findByListId(listId)
+        val task = tasks.listFromListID(listId)
         Ok(views.html.list(task)(e.genreId)(listId)).withSession(request.session)
       }
       case None    => NotFound(s"No entry for id=${listId}")
