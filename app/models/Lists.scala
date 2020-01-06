@@ -37,6 +37,10 @@ class Lists @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
     )
   )
 
+  def findByUserId(userId: Int): Seq[List] = Await.result(
+    db.run(sql"SELECT list_id, list_name, user_id, genre_id FROM #$table WHERE user_id=#$userId".as[List])
+  )
+
   def deleteList(id: Int): Int = Await.result(
     db.run(sqlu"DELETE FROM #$table WHERE list.id=#$id")
   )

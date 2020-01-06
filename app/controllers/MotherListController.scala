@@ -11,8 +11,12 @@ import models.{List, Lists, Tasks}
 class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerComponents) extends AbstractController(cc) {
 
   def list = Action { request =>
-    val entreis = lists.list
-    Ok(views.html.home(entreis)(request)).withSession(request.session)
+    (for {
+      userId <- request.session.get("userId")
+    } yield {
+      val entreis = lists.findByUserId(userId.toInt)
+      Ok(views.html.home(entreis)(request)).withSession(request.session)
+    }).getOrElse[Result](Redirect("/"))
   }
 
   def listRegistration = Action { request =>
