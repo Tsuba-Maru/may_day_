@@ -16,11 +16,17 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     Ok(views.html.list(entries)(genreId)(listId))
   }
 
+  /**
+    * タスク新規登録ページを表示
+    */
   def register(listId: Int) = Action { implicit request =>
     val genreId = lists.findByListId(listId).get.genre_id
     Ok(views.html.taskForm(genreId)(listId)(request))
   }
 
+  /**
+    * タスクを新規登録
+    */
   def confirm(listId: Int) = Action { request =>
     (for {
       param       <- request.body.asFormUrlEncoded
@@ -34,6 +40,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     }).getOrElse[Result](Redirect("/lists/" + listId + "/add"))
   }
 
+  /**
+    * 完了状態のみを変更
+    */
   def comp(taskId: Int, listId: Int) = Action {
     tasks.findByID(taskId) match {
       case Some(e) =>
@@ -49,6 +58,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     Redirect(routes.TaskController.list(listId)).withNewSession
   }
 
+  /**
+    * タスク編集ページを表示
+    */
   def edit(listId: Int, taskId: Int) = Action { request =>
     val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
     tasks.findByID(taskId) match {
@@ -57,6 +69,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     }
   }
 
+  /**
+    * タスク上書き
+    */
   def update(listId: Int, taskId: Int) = Action { request =>
     (for {
       param       <- request.body.asFormUrlEncoded
@@ -71,6 +86,9 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     }).getOrElse[Result](Redirect("/lists/" + listId + "/" + taskId + "edit"))
   }
 
+  /**
+    * タスク削除
+    */
   def delete(listId: Int, taskId: Int) = Action {
     tasks.findByID(taskId) match {
       case Some(e) => tasks.delete(taskId)
