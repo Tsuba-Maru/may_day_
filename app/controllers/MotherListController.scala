@@ -14,8 +14,8 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
     (for {
       userId <- request.session.get("userId")
     } yield {
-      val entreis = lists.findByUserId(userId.toInt)
-      Ok(views.html.home(entreis)(request)).withSession(request.session)
+      val entries = lists.findByUserId(userId.toInt)
+      Ok(views.html.home(entries)(request)).withSession(request.session)
     }).getOrElse[Result](Redirect("/"))
   }
 
