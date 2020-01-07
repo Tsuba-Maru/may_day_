@@ -33,9 +33,16 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       name1       <- param.get("name1").flatMap(_.headOption)
       name2       <- param.get("name2").flatMap(_.headOption)
       description <- param.get("description").flatMap(_.headOption)
-      deadline    <- param.get("deadline").flatMap(_.headOption)
+      year        <- param.get("year").flatMap(_.headOption)
+      month       <- param.get("month").flatMap(_.headOption)
+      day         <- param.get("day").flatMap(_.headOption)
     } yield {
-      tasks.save(Task(listId, name1, name2, description, deadline, false))
+      if (year!=null){
+        val deadline = year + "-" + month + "-" + day + " " + "12:00:00"
+        tasks.save(Task(listId, name1, name2, description, deadline, false))
+      } else {
+        tasks.save(Task(listId, name1, name2, description, null, false))
+      }
       Redirect(routes.TaskController.list(listId)).withNewSession
     }).getOrElse[Result](Redirect("/lists/" + listId + "/add"))
   }
@@ -78,10 +85,17 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       name1       <- param.get("name1").flatMap(_.headOption)
       name2       <- param.get("name2").flatMap(_.headOption)
       description <- param.get("description").flatMap(_.headOption)
-      deadline    <- param.get("deadline").flatMap(_.headOption)
+      year        <- param.get("year").flatMap(_.headOption)
+      month       <- param.get("month").flatMap(_.headOption)
+      day         <- param.get("day").flatMap(_.headOption)
       isDone      <- param.get("isDone").flatMap(_.headOption)
     } yield {
-      tasks.save(Task(taskId, listId, name1, name2, description, deadline, null, isDone.toBoolean))
+      if (year!=null){
+        val deadline = year + "-" + month + "-" + day + " " + "12:00:00"
+        tasks.save(Task(taskId, listId, name1, name2, description, deadline, null, isDone.toBoolean))
+      } else {
+        tasks.save(Task(taskId, listId, name1, name2, description, null, null, isDone.toBoolean))
+      }
       Redirect(routes.TaskController.list(listId)).withNewSession
     }).getOrElse[Result](Redirect("/lists/" + listId + "/" + taskId + "edit"))
   }
