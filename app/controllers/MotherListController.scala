@@ -36,6 +36,7 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
     }).getOrElse[Result](Redirect("/lists/create"))
   }
 
+  /*
   def entry(listId: Int) = Action { request =>
     lists.findByListId(listId) match {
       case Some(e) => {
@@ -45,6 +46,7 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
       case None    => NotFound(s"No entry for id=${listId}")
     }
   }
+  */
 
   def delete(listId: Int) = Action { request =>
     lists.deleteList(listId)
