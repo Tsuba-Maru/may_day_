@@ -1,3 +1,16 @@
+# MotherList
+GET     /lists                      controllers.MotherListController.list
+GET     /lists/create               controllers.MotherListController.listRegistration
+POST    /lists/create               controllers.MotherListController.register
+GET     /lists/:listId/delete       controllers.MotherListController.delete(listId: Int)
+GET     /lists/:listId/edit         controllers.MotherListController.edit(listId: Int)
+
+
+# Resources
+GET     /robot.txt                  controllers.Default.notFound
+GET     /favicon.ico                controllers.Assets.at(path="/public/images", file="favicon.png")
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
 # Task
 
 GET  /lists/:listId                 controllers.TaskController.list(listId: Int)
