@@ -6,13 +6,7 @@ GET     /lists/:listId/delete       controllers.MotherListController.delete(list
 GET     /lists/:listId/edit         controllers.MotherListController.edit(listId: Int)
 
 
-# Resources
-GET     /robot.txt                  controllers.Default.notFound
-GET     /favicon.ico                controllers.Assets.at(path="/public/images", file="favicon.png")
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
 # Task
-
 GET  /lists/:listId                 controllers.TaskController.list(listId: Int)
 GET  /lists/:listId/add             controllers.TaskController.register(listId: Int, taskId: Int)
 POST /lists/:listId/add             controllers.TaskController.confirm(listId: Int)
@@ -20,3 +14,22 @@ GET  /lists/:listId/:taskId/comp    controllers.TaskController.comp(listId: Int,
 GET  /lists/:listId/:taskId/edit    controllers.TaskController.edit(listId: Int, taskId: Int)
 POST /lists/:listId/:taskId/edit    controllers.TaskController.update(listId: Int, taskId: Int)
 GET  /lists/:listId/:taskId/delete  controllers.TaskController.delete(listId: Int, taskId: Int)
+
+
+# User
+GET     /                           controllers.UserController.index
+POST    /                           controllers.UserController.index
+GET     /signup                     controllers.UserController.signup
+POST    /signup/confirm             controllers.UserController.signupConfirm
+POST    /signin                     controllers.UserController.signin
+GET     /settings                   controllers.UserController.settings
+GET     /deactivate                 controllers.UserController.deactivate
+POST    /settings/confirm           controllers.UserController.settingsConfirm
+POST    /settings/complete          controllers.UserController.settingsComplete
+
+
+# Resources
+GET     /robot.txt                  controllers.Default.notFound
+GET     /favicon.ico                controllers.Assets.at(path="/public/images", file="favicon.png")
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
