@@ -15,12 +15,12 @@ GET  /lists/:listId/:taskId/edit    controllers.TaskController.edit(listId: Int,
 POST /lists/:listId/:taskId/edit    controllers.TaskController.update(listId: Int, taskId: Int)
 GET  /lists/:listId/:taskId/delete  controllers.TaskController.delete(listId: Int, taskId: Int)
 
-
 # User
 GET     /                           controllers.UserController.index
 POST    /                           controllers.UserController.index
 GET     /signup                     controllers.UserController.signup
 POST    /signup/confirm             controllers.UserController.signupConfirm
+GET     /signup/complete            controllers.UserController.signupComplete
 POST    /signin                     controllers.UserController.signin
 GET     /settings                   controllers.UserController.settings
 GET     /deactivate                 controllers.UserController.deactivate
