@@ -20,11 +20,11 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
   }
 
   /** *ユーザー登録 ***/
-  def startSignup = Action { request =>
+  def signup = Action { request =>
     Ok(views.html.signupForm(0)(request)) // 同上
   }
 
-  def signup = Action { request => //登録可能か調べ、確認画面へ
+  def signupConfirm = Action { request => //登録可能か調べ、確認画面へ
     (for {
       param    <- request.body.asFormUrlEncoded
       userName <- param.get("userName").flatMap(_.headOption)
@@ -43,7 +43,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
 
   }
 
-  def signupConfirm = Action { request => //登録をする
+  def signupComplete = Action { request => //登録をする
     (for {
       userName <- request.session.get("userName")
       password <- request.session.get("password")
@@ -65,7 +65,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
           if (!user.isActive) { //退会していないかどうか
             Ok(views.html.signinError("このユーザーは退会済みです"))
           } else if (utility.Digest.apply(password) == user.password) { //ホーム画面へのリダイレクトを追加
-            Redirect("/lists").withNewSession.withSession("userId" -> user.userId.toString)
+            Redirect("/").withNewSession.withSession("userId" -> user.userId.toString)
           } else {
             Ok(views.html.signinError("パスワードが違います"))
           }
@@ -75,7 +75,6 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
   }
 
   /***ユーザー情報編集・退会***/
-
   def settings = Action { request =>
     (for {
       userId <- request.session.get("userId")
@@ -85,8 +84,9 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
           if (!user.isActive) {
             Ok(views.html.signinError("このユーザーは退会済みです"))
           } else {
-            Ok(views.html.settings(0)(request))
-              .withSession(request.session + ("userId" -> userId.toString) + ("userName"-> user.userName) + ("password" -> user.password)
+            Ok(views.html.settings(0)(user)(request))
+              .withSession(
+                request.session + ("userId" -> userId.toString) + ("userName" -> user.userName) + ("password" -> user.password)
               )
           }
         case None => NotFound(s"No entry for id=${userId}")
@@ -104,10 +104,9 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
       users.findByName(userName) match {
         case Some(user) =>
           if (user.userId != userId.toInt) { //他のユーザーと名前が同じではないか
-            Ok(views.html.settings(1)(user))
+            Ok(views.html.settings(1)(user)(request))
               .withSession(request.session)
           } else {
-            val user = User(userName, password, true)
             Ok(views.html.settingsConfirm(user)(request))
               .withSession(request.session + ("userName" -> userName) + ("password" -> password))
           }
@@ -127,7 +126,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
       user     <- users.findByID(userId.toInt)
     } yield {
       users.save(new User(userId.toInt, userName, utility.Digest.apply(password), user.isActive, user.createdAt))
-      Redirect("/").withNewSession //親リストへ
+      Redirect("/").withSession("userId" -> user.userId.toString) //親リストへ
     }).getOrElse[Result](Redirect("/"))
   }
 
