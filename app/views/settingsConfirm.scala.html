@@ -1,0 +1,15 @@
+@(user: models.User)(implicit request: RequestHeader)
+
+@import helper._
+
+@main("設定"){
+        <p>ユーザ情報を変更します</p>
+        <form action="/settings/complete" method="post">
+        @CSRF.formField
+        名前 <br>
+        <input type="text" value=@user.userName disabled/><br>
+        パスワード <br>
+        <input type="password" value=@user.password disabled/><br>
+        <input type="submit" value="登録" />
+        </form>
+}

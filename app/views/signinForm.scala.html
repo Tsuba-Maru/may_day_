@@ -1,0 +1,20 @@
+@(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Mother"){
+    <form action="/signin" method="POST">
+        @CSRF.formField
+        名前<br>
+        <input type="text" name="userName"><br>
+        パスワード<br>
+        <input type="password" name="password" required><br>
+        <input type="submit" value="ログイン"><br>
+    </form>
+    <p>
+        アカウントをお持ちですか?<br>
+    </p>
+    <div class="w3-left">
+        <a href="/signup"><span class="w3-button w3-green">新規登録</span></a>
+    </div>
+}

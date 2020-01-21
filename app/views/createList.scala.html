@@ -1,0 +1,24 @@
+@(implicit request: RequestHeader)
+
+@import helper._
+
+@views.html.main("リスト登録"){
+    <form action="/lists/create" method="post">
+        @CSRF.formField
+    <!--listName-->
+        リスト名<br>
+        <input type="text" name="listName"required/><br>
+    <!--genreID-->
+        ジャンル<br>
+        <select name="genreId">
+            <option value="0">TODOリスト</option>
+            <option value="1">読書リスト</option>
+            <option value="2">メールリスト</option>
+            <option value="3">買い物リスト</option>
+            <option value="4">食べ物リスト</option>
+            <option value="5">課題リスト</option>
+            <option value="6">動画リスト</option>
+        </select>
+        <input type="submit" value="登録"/>
+    </form>
+}

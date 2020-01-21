@@ -1,0 +1,87 @@
+@(tasks: Seq[models.Task])(genreID: Int)(listID: Int)
+
+@import helper._
+
+@entryRow(entry: models.Task) = {
+    <tr id="@entry.taskId">
+        <td class="name1"><a href="/lists/@listID/@entry.taskId/edit">@entry.name1</a></td>
+        @if(entry.name2!=""){
+            <td class="name2">@entry.name2</td>
+        }
+        <td class="description">@entry.description</td>
+        @if(genreID!=1){
+            <td class="deadline">@entry.deadline</td>
+        }
+    </tr>
+}
+
+@main("Mother"){
+    <div class="w3-row">
+        <div class="w3-half">
+            <h3>登録済みタスク</h3>
+        </div>
+        <div class="w3-left">
+            <a href="/lists/@listID/add"><span class="w3-button w3-green">新規登録</span></a>
+        </div>
+    </div>
+    @if(tasks.nonEmpty) {
+    <table id="tasks-list" class="w3-table w3-striped w3-border">
+        <tr>
+            @genreID match {
+                case 0 =>{
+                    <!--TODO-->
+                    <th>名前</th>
+                    <th>詳細</th>
+                    <th>締切日</th>
+                }
+                case 1 => {
+                    <!--BOOK-->
+                    <th>書籍名</th>
+                    <th>著者名</th>
+                    <th>詳細</th>
+                }
+                case 2 => {
+                    <!--MAIL-->
+                    <th>件名</th>
+                    <th>送り先</th>
+                    <th>詳細</th>
+                    <th>締切日</th>
+                }
+                case 3 => {
+                    <!--SHOPPING-->
+                    <th>商品名</th>
+                    <th>売り場</th>
+                    <th>詳細</th>
+                    <th>行く日</th>
+                }
+                case 4 => {
+                    <!--FOOD-->
+                    <th>店名</th>
+                    <th>場所</th>
+                    <th>詳細</th>
+                    <th>行く日</th>
+                }
+                case 5 => {
+                    <!--REPORT-->
+                    <th>課題名</th>
+                    <th>授業名</th>
+                    <th>詳細</th>
+                    <th>締切日</th>
+                }
+                case 6 => {
+                    <!--MOVIE-->
+                    <th>名前</th>
+                    <th>URL/チャンネル</th>
+                    <th>詳細</th>
+                    <th>放送時間</th>
+                }
+            }
+        </tr>
+        @for(entry <- tasks) {
+            @entryRow(entry)
+        }
+    </table>
+    } else {
+    <p>登録されたタスクはありません</p>
+    }
+}

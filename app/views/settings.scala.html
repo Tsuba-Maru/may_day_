@@ -1,0 +1,23 @@
+@(i:Int)(user: models.User)(implicit request: RequestHeader)
+
+@import helper._
+
+@userName = @{request.session.get("userName").getOrElse("")}
+@password = @{request.session.get("password").getOrElse("")}
+
+@main("設定"){
+    @if(i==1){
+        <p>このユーザ名は既に使われています</p>
+    }
+    <form action="/settings/confirm" method="post">
+        @CSRF.formField
+        名前 <br>
+        <input type="text" name="userName" value=@user.userName required/><br>
+        パスワード <br>
+        <input type="password" name="password"  required/><br>
+        <input type="submit" value="編集"/><br><br>
+    </form>
+    <div class="w3-left">
+        <a href="/lists"><span class="w3-button w3-green">戻る</span></a>
+    </div>
+}

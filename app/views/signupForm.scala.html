@@ -1,0 +1,16 @@
+@(error: Int)(implicit request: RequestHeader)
+
+@import helper._
+
+@signup{
+    <div>
+        <form action="/signup/confirm" method="POST">
+            @CSRF.formField
+            名前<br>
+            <input type="text" name="userName"><br>
+            パスワード<br>
+            <input type="password" name="password" required><br>
+            <input type="submit" value="登録">
+        </form>
+    </div>
+}

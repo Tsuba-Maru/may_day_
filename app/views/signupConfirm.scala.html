@@ -1,0 +1,14 @@
+@(userName: String)(implicit request: RequestHeader)
+
+@import helper._
+
+@signup{
+        @CSRF.formField
+        <dl>
+            <dt>ユーザー名</dt>
+            <dd>@userName</dd>
+        </dl>
+        <div class="w3-left">
+            <a href="/signup/complete"><span class="w3-button w3-green">登録</span></a>
+        </div>
+}

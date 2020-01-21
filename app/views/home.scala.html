@@ -1,0 +1,97 @@
+@(entries: Seq[models.List])(notifications: Seq[models.Task])(implicit request: RequestHeader)
+
+@entryRow(entry: models.List) = {
+    <tr id="@entry.listId">
+        <td class="listName"><a href="/lists/@entry.listId">@entry.listName</a></td>
+        <td class="genre">
+            @entry.genreId match{
+                case 0 => {<i class="fas fa-list"></i>}
+                case 1 => {<i class="fas fa-book"></i>}
+                case 2 => {<i class="far fa-envelope"></i>}
+                case 3 => {<i class="fas fa-shopping-cart"></i>}
+                case 4 => {<i class="fas fa-utensils"></i>}
+                case 5 => {<i class="fas fa-school"></i>}
+                case 6 => {<i class="fas fa-video"></i>}
+            }
+        </td>
+        <td>
+            <div class="pop-box">
+                <label for="popup-on"><label for="popup-on"><div class="btn-open"><i class="fas fa-trash-alt"></i></div></label>
+                    <input type="checkbox" id="popup-on">
+                    <div class="popup">
+                        <label for="popup-on" class="icon-close">×</label>
+                        <div class="popup-content">
+                            <!-- ポップアップの中身 -->
+                            <h3>リスト削除</h3>
+                            本当に削除しますか?<br><br>
+                            <a href="/lists/@entry.listId/delete" class="btn-close">削除</a>
+                            <!-- ./ポップアップの中身　ここまで -->
+                        </div>
+<!--                        <label for="popup-on"><div class="btn-close">閉じる</div></label>-->
+                    </div>
+            </div>
+        </td>
+    </tr>
+}
+
+@notificationRow(notification: models.Task) = {
+    <tr id="@notification.taskId">
+        <td class="name1"><a href="/lists/@notification.listId">@notification.name1</a></td>
+    </tr>
+}
+
+@main("Mother"){
+
+<!--各ボタン-->
+<!--退会-->
+    <div class="button">
+        <a href="/deactivate" id="deactivate" class="btn-border">退会</a>
+    </div>
+
+<!--ログアウト-->
+    <div class="button">
+        <a href="/" id="logout" class="btn-border">ログアウト</a>
+    </div>
+
+<!--アカウント設定-->
+    <div class="button">
+        <a href="/settings" class="btn-border">アカウント</a>
+    </div>
+
+<!--新規リスト登録-->
+    <div class="button">
+        <a href="/lists/create" class="btn-border">新規リスト作成</a>
+    </div>
+
+<!--通知欄-->
+    @if(notifications.nonEmpty){
+        <table id="notifications" class="w3-table w3-striped w3-border">
+            <tr>
+                <th>タスク名</th>
+                <th>残り日数</th>
+            </tr>
+            @for(notification <- notifications){
+                @notificationRow(notification)
+            }
+        </table>
+    }else{
+        <p>新しい通知はありません</p>
+    }
+
+<!--リスト-->
+    @if(entries.nonEmpty){
+        <table id="lists-list" class="w3-table w3-striped w3-border">
+            <tr>
+                <th>リスト名</th>
+                <th>ジャンル</th>
+                <th></th>
+            </tr>
+            @for(entry <- entries){
+                @entryRow(entry)
+            }
+        </table>
+    }else{
+        <p>登録されたリストはありません</p>
+    }
+<!---->
+}
