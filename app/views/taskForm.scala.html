@@ -64,9 +64,9 @@
         </select> 日
 
         }else{
-            <input type="hidden" name="year" value="">
-            <input type="hidden" name="month" value="">
-            <input type="hidden" name="day" value="">
+            <input type="hidden" name="year" value="0">
+            <input type="hidden" name="month" value="0">
+            <input type="hidden" name="day" value="0">
         }
         <input type="submit" value="登録"/><br>
     </form>
@@ -101,7 +101,7 @@
         }
         case 6 => {
         <!--MOVIE-->
-            @items("名前", "URL/チャンネル", "詳細", "放送時間")
+            @items("名前", "URL/チャンネル", "詳細", "放送日")
         }
     }
 }

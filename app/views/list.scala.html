@@ -10,7 +10,7 @@
         }
         <td class="description">@entry.description</td>
         @if(genreID!=1){
-            <td class="deadline">@entry.deadline</td>
+            <td class="deadline">@entry.deadYear 年 @entry.deadMonth 月 @entry.deadDay 日</td>
         }
     </tr>
 }
@@ -73,7 +73,7 @@
                     <th>名前</th>
                     <th>URL/チャンネル</th>
                     <th>詳細</th>
-                    <th>放送時間</th>
+                    <th>放送日</th>
                 }
             }
         </tr>
@@ -84,4 +84,7 @@
     } else {
     <p>登録されたタスクはありません</p>
     }
+    <div class="w3-left">
+        <a href="/lists" class="w3-button w3-green">戻る</a>
+    </div>
 }

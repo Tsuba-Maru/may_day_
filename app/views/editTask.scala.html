@@ -1,0 +1,124 @@
+@(task: models.Task)(genreID: Int)(listID: Int)(implicit request: RequestHeader)
+<!--タスク編集画面-->
+@import helper._
+@import scala.util.matching.Regex
+
+
+@items(name1: String, name2: String, description: String, deadline: String) = {
+
+
+<form action="/lists/@listID/@task.taskId/edit" method="post">
+    @CSRF.formField
+
+    <div class="w3-left">
+        <a href="/"><span class="w3-button w3-green">戻る</span></a>
+    </div>
+    <br><br><br>
+    @name1<input type="text" name="name1" value=@task.name1 ><br>
+
+    @if(name2!=null){
+        @name2<input type="text" name="name2" value=@task.name2 ><br>
+    }else{
+        <input type="hidden" name="name2" value="">
+    }
+
+    @description<textarea name="description" value=@task.description ></textarea><br>
+        @deadline @task.deadYear 年 @task.deadMonth 月 @task.deadDay 日 <a href="#" class="btn-border-mini" id="edit-deadline">@deadline 編集</a>
+        <div class="year-month-day"></div>
+        <div class="default-date">
+            <input type="hidden" name="year" value=@task.deadYear>
+            <input type="hidden" name="month" value=@task.deadMonth>
+            <input type="hidden" name="day" value=@task.deadDay>
+        </div>
+    完了状態<a href="/lists/@listID/@task.taskId/comp" class="btn-border-mini">完了</a><br>
+    <input type="submit" value="編集終了"/><br>
+</form>
+
+<script>
+        $('#edit-deadline').click(function(){
+            $('div.default-date').html("");
+            $('div.year-month-day').html("<input name='year' type='text' class='js-changeYear' > 年"
+                +"<select name='month' class='js-changeMonth'>"
+                +"<option value='1'>1</option>"
+                +"<option value='2'>2</option>"
+                +"<option value='3'>3</option>"
+                +"<option value='4'>4</option>"
+                +"<option value='5'>5</option>"
+                +"<option value='6'>6</option>"
+                +"<option value='7'>7</option>"
+                +"<option value='8'>8</option>"
+                +"<option value='9'>9</option>"
+                +"<option value='10'>10</option>"
+                +"<option value='11'>11</option>"
+                +"<option value='12'>12</option>"
+                +"</select> 月"
+                +"<select name='day' class='js-changeDay'>"
+                +"<option value='1'>1</option>"
+                +"<option value='2'>2</option>"
+                +"<option value='3'>3</option>"
+                +"<option value='4'>4</option>"
+                +"<option value='5'>5</option>"
+                +"<option value='6'>6</option>"
+                +"<option value='7'>7</option>"
+                +"<option value='8'>8</option>"
+                +"<option value='9'>9</option>"
+                +"<option value='10'>10</option>"
+                +"<option value='11'>11</option>"
+                +"<option value='12'>12</option>"
+                +"<option value='13'>13</option>"
+                +"<option value='14'>14</option>"
+                +"<option value='15'>15</option>"
+                +"<option value='16'>16</option>"
+                +"<option value='17'>17</option>"
+                +"<option value='18'>18</option>"
+                +"<option value='19'>19</option>"
+                +"<option value='20'>20</option>"
+                +"<option value='21'>21</option>"
+                +"<option value='22'>22</option>"
+                +"<option value='23'>23</option>"
+                +"<option value='24'>24</option>"
+                +"<option value='25'>25</option>"
+                +"<option value='26'>26</option>"
+                +"<option value='27'>27</option>"
+                +"<option value='28'>28</option>"
+                +"<option value='29'>29</option>"
+                +"<option value='30'>30</option>"
+                +"<option value='31'>31</option>"
+                +"</select> 日");
+        });
+    </script>
+}
+
+@main("タスク登録"){
+<h2>タスク登録</h2>
+@genreID match{
+case 0 => {
+<!--TODO-->
+@items("名前", null, "詳細", "締切日")
+}
+case 1 => {
+<!--BOOK-->
+@items("書籍名", "著者名", "詳細", null)
+}
+case 2 => {
+<!--MAIL-->
+@items("件名", "送り先", "詳細", "締切日")
+}
+case 3 => {
+<!--SHOPPING-->
+@items("商品名", "売り場", "詳細", "行く日")
+}
+case 4 => {
+<!--FOOD-->
+@items("店名", "場所", "詳細", "行く日")
+}
+case 5 => {
+<!--HOMEWORK-->
+@items("課題名", "授業名", "詳細", "締切日")
+}
+case 6 => {
+<!--MOVIE-->
+@items("名前", "URL/チャンネル", "詳細", "放送時間")
+}
+}
+}
