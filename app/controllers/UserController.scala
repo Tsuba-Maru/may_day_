@@ -64,8 +64,8 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
         case Some(user) =>
           if (!user.isActive) { //退会していないかどうか
             Ok(views.html.signinError("このユーザーは退会済みです"))
-          } else if (utility.Digest.apply(password) == user.password) { //ホーム画面へのリダイレクトを追加
-            Redirect("/").withNewSession.withSession("userId" -> user.userId.toString)
+          } else if (utility.Digest.apply(password) == user.password) { //ログイン成功
+            Redirect("/lists").withNewSession.withSession("userId" -> user.userId.toString)
           } else {
             Ok(views.html.signinError("パスワードが違います"))
           }
