@@ -1,5 +1,4 @@
 @(entries: Seq[models.List])(nearDeadline: Seq[models.Task])(pastDeadline: Seq[models.Task])(implicit request: RequestHeader)
-@import util.Random
 @import java.time.LocalTime
 @userId = @{request.session.get("userId").getOrElse("")}
 @entryRow(entry: models.List) = {
@@ -77,6 +76,7 @@
             <tr>
                 <th>タスク名</th>
                 <th>締切日</th>
+                <th>完了状態</th>
             </tr>
             @for(notification <- nearDeadline){
                 @notificationRow(notification)
@@ -125,74 +125,87 @@
     }else{
         <p>登録されたリストはありません</p>
     }
-<!---->
-
+<!--お母さん表示-->
 
 <div class="sticky">
+
     @if(userId.toInt % 3 == 0){
-    <p><img src="@routes.Assets.versioned("images/sidebar_a.png")" width="280px" height="480px"></p>
-    <div class="char">
-        @Random.nextInt(2) match{
-        case 0 => {
-        @LocalTime.now().getHour() match{
-        case 6|7|8|9|10|11|12     => {<p>おはよう！</p>}
-        case 13|14|15|16|17|18|19 => {<p>もうお昼よ！</p>}
-        case _                    => {<p>おかえりなさい</p>}
-        }
-        }
-        case 1 => {
-        @LocalTime.now().getHour() match{
-        case 12|13|14|18|19|20 => {<p>体調崩してない？</p>}
-        case 23|0|1|2|3        => {<p>そろそろ寝なさい！</p>}
-        case _                 => {<p>今日も一日頑張って！</p>}
-        }
-        }
-        }
-    </div>
+    <img src="@routes.Assets.versioned("images/sidebar.png")" width="140px" height="240px">
+    @Math.floor(Math.random() * 2)  match{
+    case 0 => {
+    @if(nearDeadline.nonEmpty){
+    <p class="char2">通知があります！<br>確認しましょう！</p>
+    }else{
+    @LocalTime.now().getHour() match{
+    case 8|9|10|11|12     => {<p class="char2">こんにちは！<br>調子どうですか？</p>}
+    case 13|14|15|16|17   => {<p class="char2">今日の体調は<br>どうですか？</p>}
+    case 18|19|20         => {<p class="char2">おかえりなさい！<br>お疲れ様です！</p>}
+    case _                => {<p class="char">こんにちは！</p>}
+    }
+    }
+    }
+    case 1 => {
+    @LocalTime.now().getHour() match{
+    case 6|7|8|9|10        => {<p class="char">あ！おはよう<br>ございます！</p>}
+    case 12|13|14          => {<p class="char2">もうお昼です！<br>出かけましょう！</p>}
+    case 23|0|1|2|3        => {<p class="char2">こんな時間！<br>もう寝ましょう！</p>}
+    case _                 => {<p class="char2">今日も一日、<br>頑張りましょう！</p>}
+    }
+    }
+    }
     }
 
-    @if(userId.toInt % 3 ==  1){
-    <p><img src="@routes.Assets.versioned("images/sidebar.png")" width="280px" height="480px"></p>
-    <div class="char">
-        @Random.nextInt(2) match{
-        case 0 => {
-        @LocalTime.now().getHour() match{
-        case 6|7|8|9|10|11|12     => {<p>おはようございます！</p>}
-        case 13|14|15|16|17|18|19 => {<p>こんにちは！</p>}
-        case _                    => {<p>こんばんは！</p>}
-        }
-        }
-        case 1 => {
-        @LocalTime.now().getHour() match{
-        case 12|13|14|18|19|20 => {<p>ご飯はちゃんと食べてますか？</p>}
-        case 23|0|1|2|3        => {<p>そろそろ寝ませんか？</p>}
-        case _                 => {<p>今日も一日頑張りましょう！</p>}
-        }
-        }
-        }
-    </div>
+    @if(userId.toInt % 3 == 1){
+    <img src="@routes.Assets.versioned("images/sidebar_a.png")" width="140px" height="240px">
+    @Math.floor(Math.random() * 2)  match{
+    case 0 => {
+    @if(nearDeadline.nonEmpty){
+    <p class="char2">通知あるわよ！<p>確認して！</p>
+    }else{
+    @LocalTime.now().getHour() match{
+    case 8|9|10|11|12     => {<p class="char">調子はどう？</p>}
+    case 13|14|15|16|17   => {<p class="char">ご飯食べた？</p>}
+    case 18|19|20         => {<p class="char">おかえり！</p>}
+    case _                => {<p class="char">何してるの？</p>}
     }
+    }
+    }
+    case 1 => {
+    @LocalTime.now().getHour() match{
+    case 6|7|8|9|10        => {<p class="char">おはよう！<br>遅刻しないでね！</p>}
+    case 12|13|14          => {<p class="char2">もうお昼よ！<br>遅刻しないでね！</p>}
+    case 23|0|1|2|3        => {<p class="char2">こんな時間！<br>そろそろ寝なさい！</p>}
+    case _                 => {<p class="char2">今日も一日、<br>頑張って！</p>}
+    }
+    }
+    }
+    }
+
 
     @if(userId.toInt % 3 == 2){
-    <p><img src="@routes.Assets.versioned("images/sidebar_k.png")" width="280px" height="480px"></p>
-    <div class="char">
-        @Random.nextInt(2) match{
-        case 0 => {
-        @LocalTime.now().getHour() match{
-        case 6|7|8|9|10|11|12     => {<p>おはようさん！</p>}
-        case 13|14|15|16|17|18|19 => {<p>こんちは！</p>}
-        case _                    => {<p>まいど！</p>}
-        }
-        }
-        case 1 => {
-        @LocalTime.now().getHour() match{
-        case 12|13|14|18|19|20 => {<p>調子、どや？</p>}
-        case 23|0|1|2|3        => {<p>そろそろ寝とったら？</p>}
-        case _                 => {<p>おかんに任しとき！</p>}
-        }
-        }
-        }
-    </div>
+    <img src="@routes.Assets.versioned("images/sidebar_k.png")" width="140px" height="240px">
+    @Math.floor(Math.random() * 2)  match{
+    case 0 => {
+    @if(nearDeadline.nonEmpty){
+    <p class="char2">通知がきとるで！<br>確認しぃ！</p>
+    　　 }else{
+    @LocalTime.now().getHour() match{
+    case 8|9|10           => {<p class="char">おはようさん</p>}
+    case 13|14|15|16|17   => {<p class="char">掃除をせい！</p>}
+    case 18|19|20         => {<p class="char2">もう遅い時間<br>になるで！</p>}
+    case _                => {<p class="char">調子はどや？</p>}
+    }
+    }
+    }
+    case 1 => {
+    @LocalTime.now().getHour() match{
+    case 6|7|8|9|10        => {<p class="char">アメちゃん<br>いるか？</p>}
+    case 12|13|14          => {<p class="char2">もう昼やで！<br>起きんかい！</p>}
+    case 23|0|1|2|3        => {<p class="char2">こんな時間！<br>もう寝んかい！</p>}
+    case _                 => {<p class="char2">今日もおかんに<br>任しとき！</p>}
+    }
+    }
+    }
     }
 </div>
 }
