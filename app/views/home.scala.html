@@ -39,6 +39,7 @@
     <tr id="@notification.taskId">
         <td class="name1"><a href="/lists/@notification.listId/@notification.taskId/edit">@notification.name1</a></td>
         <td class="deadline">@notification.deadYear 年 @notification.deadMonth 月 @notification.deadDay 日</td>
+        <td class="isDone"><a href="/lists/@notification.listId/@notification.taskId/comp" class="btn-border-mini">やった</a></td>
     </tr>
 }
 
@@ -95,6 +96,7 @@
             <tr class="w3-red">
                 <th>タスク名</th>
                 <th>締切日</th>
+                <th>完了状態</th>
             </tr>
             @for(notification <- pastDeadline){
                 @notificationRow(notification)
