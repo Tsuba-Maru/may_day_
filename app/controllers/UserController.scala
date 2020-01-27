@@ -34,7 +34,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
           Ok(views.html.signupForm(1)(request))
             .withSession(request.session + ("userName" -> userName) + ("password" -> password))
         case None =>
-          users.getMaxID match {   //お母さんを表示
+          users.getMaxID match {
             case Some(userId) =>
               Ok(views.html.signupConfirm(userName)(userId + 1)(request))
                 .withSession(request.session + ("userName" -> userName) + ("password" -> password))
@@ -109,6 +109,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
             Ok(views.html.settings(1)(user)(request))
               .withSession(request.session)
           } else {
+            val user = User(userName, password, true)
             Ok(views.html.settingsConfirm(user)(request))
               .withSession(request.session + ("userName" -> userName) + ("password" -> password))
           }
