@@ -2,20 +2,55 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
-import models.{List, Lists, Tasks}
+import models._
+import java.time.LocalDate
 
 /**
   * 親リストのコントローラ
   */
 @Singleton
-class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerComponents) extends AbstractController(cc) {
+class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(users: Users)(links: Links)(cc: ControllerComponents)
+    extends AbstractController(cc) {
 
   def list = Action { request =>
     (for {
       userId <- request.session.get("userId")
     } yield {
-      val entries = lists.findByUserId(userId.toInt)
-      Ok(views.html.home(entries)(request)).withSession(request.session)
+      var entries = lists.findByUserId(userId.toInt)
+      /***********共有用***********/
+      val linkList = links.findByUserId(userId.toInt)
+      linkList.foreach { e =>
+        lists.findByListId(e.listId) match {
+          case Some(s) => entries = entries :+ s
+          case None    =>
+        }
+      }
+      entries = entries.distinct
+      /****************************/
+      val today: LocalDate        = LocalDate.now()
+      var pastDeadline: Seq[Task] = Seq.empty
+      var nearDeadline: Seq[Task] = Seq.empty
+
+      for (i <- 0 to 2) { //締め切りが近いもの（今日〜i日後）
+        for (entry <- entries) {
+          val taskEntry =
+            tasks.listFromListID(entry.listId).filter(task => (task.deadYear.toInt != 0) && (!task.isDone))
+          nearDeadline ++= taskEntry.filter(
+            task =>
+              LocalDate.of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt).equals(today.plusDays(i))
+          )
+        }
+      }
+
+      for (entry <- entries) { //締め切りがすぎたもの
+        val taskEntry = tasks.listFromListID(entry.listId).filter(task => (task.deadYear.toInt != 0) && (!task.isDone))
+        pastDeadline ++= taskEntry.filter(
+          task => LocalDate.of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt).compareTo(today) < 0
+        )
+      }
+
+      Ok(views.html.home(entries)(nearDeadline)(pastDeadline)(request)).withSession(request.session)
+
     }).getOrElse[Result](Redirect("/"))
   }
 
@@ -46,14 +81,34 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
       case None    => NotFound(s"No entry for id=${listId}")
     }
   }
-  */
+   */
 
   def delete(listId: Int) = Action { request =>
-    lists.deleteList(listId)
-    Redirect("/lists").withSession(request.session)
+    //lists.deleteList(listId)
+    //Redirect("/lists").withSession(request.session)
+    /***********共有用***********/
+    (for {
+      userId <- request.session.get("userId")
+    } yield {
+      lists.findByListId(listId) match {
+        case Some(e) => {
+          val owner = e.userId
+          if (owner == userId.toInt) {
+            lists.deleteList(listId)
+            links.deleteList(listId)
+            tasks.deleteList(listId)
+          } else {
+            links.deleteLink(listId, userId.toInt)
+          }
+        }
+        case None => NotFound(s"No entry for id=${listId}")
+      }
+      Redirect("/lists").withSession(request.session)
+    }).getOrElse[Result](Redirect(s"/lists/${listId}")).withSession(request.session)
+    /***************************/
   }
 
-  def edit(listId: Int) = Action {request =>
+  def edit(listId: Int) = Action { request =>
     (for {
       param    <- request.body.asFormUrlEncoded
       listName <- param.get("listName").flatMap(_.headOption)
@@ -62,6 +117,28 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(cc: ControllerC
       lists.editListName(listName)(listId)
       Redirect(s"/lists/${listId}").withSession("userId" -> userId)
     }).getOrElse[Result](Redirect("/lists"))
+  }
+
+  //共有
+  def share(listId: Int) = Action { request =>
+    Ok(views.html.share(listId)(request)).withSession(request.session)
+  }
+
+  def confirmShare(listId: Int) = Action { request =>
+    (for {
+      param      <- request.body.asFormUrlEncoded
+      userName   <- param.get("userName").flatMap(_.headOption)
+      thisUserId <- request.session.get("userId")
+    } yield {
+      users.findByName(userName) match {
+        case Some(e) => {
+          val userId = e.userId
+          links.save(Link(listId, userId))
+          Redirect(s"/lists/${listId}").withSession("userId" -> thisUserId)
+        }
+        case None => NotFound(s"No entry for name=${userName}")
+      }
+    }).getOrElse[Result](Redirect(s"/lists/${listId}/share")).withSession(request.session)
   }
 
 }
