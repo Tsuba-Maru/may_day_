@@ -18,7 +18,8 @@ CREATE TABLE list (
 );
 
 CREATE TABLE link (
-    task_id int NOT NULL,
+    num int PRIMARY KEY AUTO_INCREMENT,
+    list_id int NOT NULL,
     user_id int NOT NULL
 );
 
@@ -28,7 +29,9 @@ CREATE TABLE task (
     name1 varchar(32) NOT NULL,
     name2 varchar(128),
     description varchar(255),
-    deadline varchar(10),
+    dead_year varchar(4),
+    dead_month varchar(2),
+    dead_day varchar(2),
     created_at timestamp default CURRENT_TIMESTAMP NOT NULL,
     is_done boolean default FALSE
 );
