@@ -41,6 +41,15 @@ class Users @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
       )
     )
 
+  def getMaxID: Option[Int] = //最新のユーザーIDを取得
+    Await.result(
+      db.run(
+        sql"SELECT MAX(user_id)FROM #$table"
+          .as[Int]
+          .headOption
+      )
+    )
+
   def save(user: User): Int = user match { //新規追加と更新
     case User(0, userName, password, isActive, _) =>
       Await.result(
