@@ -12,7 +12,7 @@
         }
         @description<textarea name="description" required></textarea><br>
         @if(deadline!=null){
-        <input name="year" type="text" class="js-changeYear"> 年
+        <input name="year" type="text" class="js-changeYear" pattern="\d\d\d\d" required> 年
 
         <select name="month" class="js-changeMonth">
             <option value="1">1</option>

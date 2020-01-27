@@ -40,7 +40,7 @@
 <script>
         $('#edit-deadline').click(function(){
             $('div.default-date').html("");
-            $('div.year-month-day').html("<input name='year' type='text' class='js-changeYear' > 年"
+            $('div.year-month-day').html("<input name='year' type='text' class='js-changeYear' pattern='\d\d\d\d' required> 年"
                 +"<select name='month' class='js-changeMonth'>"
                 +"<option value='1'>1</option>"
                 +"<option value='2'>2</option>"
