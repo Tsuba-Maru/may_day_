@@ -4,16 +4,21 @@ GET     /lists/create               controllers.MotherListController.listRegistr
 POST    /lists/create               controllers.MotherListController.register
 GET     /lists/:listId/delete       controllers.MotherListController.delete(listId: Int)
 GET     /lists/:listId/edit         controllers.MotherListController.edit(listId: Int)
+GET     /lists/:listId/share        controllers.MotherListController.share(listId: Int)
+POST    /lists/:listId/share        controllers.MotherListController.confirmShare(listId: Int)
 
 
 # Task
 GET  /lists/:listId                 controllers.TaskController.list(listId: Int)
-GET  /lists/:listId/add             controllers.TaskController.register(listId: Int, taskId: Int)
+POST /lists/:listId                 controllers.TaskController.extract(listId: Int)
+GET  /lists/:listId/sorted/:sortItem controllers.TaskController.sort(listId: Int, sortItem: String)
+GET  /lists/:listId/add             controllers.TaskController.register(listId: Int)
 POST /lists/:listId/add             controllers.TaskController.confirm(listId: Int)
 GET  /lists/:listId/:taskId/comp    controllers.TaskController.comp(listId: Int, taskId: Int)
 GET  /lists/:listId/:taskId/edit    controllers.TaskController.edit(listId: Int, taskId: Int)
 POST /lists/:listId/:taskId/edit    controllers.TaskController.update(listId: Int, taskId: Int)
 GET  /lists/:listId/:taskId/delete  controllers.TaskController.delete(listId: Int, taskId: Int)
+
 
 # User
 GET     /                           controllers.UserController.index
