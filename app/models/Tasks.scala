@@ -65,4 +65,8 @@ class Tasks @Inject()(dbcp: DBConfigProvider)(implicit ec: ExecutionContext) ext
   def delete(taskId: Int): Int = Await.result(
     db.run(sqlu"DELETE FROM #$table WHERE task_id = #$taskId")
   )
+ 
+   def deleteList(id: Int): Int = Await.result(
+    db.run(sqlu"DELETE FROM #$table WHERE list_id=#$id")
+  )
 }
