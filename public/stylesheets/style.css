@@ -50,10 +50,10 @@ a.top-page{
 /* hrefボタン(小) */
 .btn-border-mini {
   display: inline-block;
-  max-width: 180px;
+  max-width: 100px;
   text-align: left;
   border: 2px solid #9ec34b;
-  font-size: 16px;
+  font-size: 10px;
   color: #9ec34b;
   text-decoration: none;
   font-weight: bold;
@@ -222,4 +222,24 @@ input[type="submit"]:hover{
 .popup-content{
   margin: 40px auto 40px auto;
   width: 90%;
+}
+
+/* サイドバー */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 300px;
+  text-align: right;
+}
+
+.char {
+ position: absolute;
+ top: 7%;
+ left: 87.8%;
+ color: #000;
+ /*background: rgba(0,0,0,.6);*/
+ width: 150px;
+ padding: 1em 0;
+ font-size: 1.2em;
+ text-align: center;
 }
