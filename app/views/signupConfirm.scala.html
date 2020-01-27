@@ -1,12 +1,20 @@
 @(userName: String)(implicit request: RequestHeader)
 
 @import helper._
-
+@userId = @{request.session.get("userId").getOrElse("1")}
 @signup{
         @CSRF.formField
         <dl>
             <dt>ユーザー名</dt>
             <dd>@userName</dd>
+        </dl>
+        <dl>
+            <dt>あなたのお母さん</dt>
+            @(userId.toInt % 3) match {
+            case 0 => {<dd><img src="@routes.Assets.versioned("images/icon_a.png")" width="150px" height="150px"></dd>}
+            case 1 => {<dd><img src="@routes.Assets.versioned("images/icon.png")" width="150px" height="150px"></dd>}
+            case 2 => {<dd><img src="@routes.Assets.versioned("images/icon_k.png")" width="150px" height="150px"></dd>}
+            }
         </dl>
         <div class="w3-left">
             <a href="/signup/complete"><span class="w3-button w3-green">登録</span></a>

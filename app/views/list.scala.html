@@ -1,4 +1,4 @@
-@(tasks: Seq[models.Task])(genreID: Int)(listID: Int)
+@(tasks: Seq[models.Task])(genreID: Int)(listID: Int)(implicit request: RequestHeader)
 
 @import helper._
 
@@ -12,16 +12,84 @@
         @if(genreID!=1){
             <td class="deadline">@entry.deadYear 年 @entry.deadMonth 月 @entry.deadDay 日</td>
         }
+        <td class="isDone">
+            @if(entry.isDone=="true"){
+                やった
+            }else{
+                まだ
+            }
+        </td>
+        <td>
+            <div class="pop-box">
+                <label for="popup-on"><label for="popup-on"><div class="btn-open"><i class="fas fa-trash-alt"></i></div></label>
+                    <input type="checkbox" id="popup-on">
+                    <div class="popup">
+                        <label for="popup-on" class="icon-close">×</label>
+                        <div class="popup-content">
+                            <!-- ポップアップの中身 -->
+                            <h3>リスト削除</h3>
+                            本当に削除しますか?<br><br>
+                            <a href="/lists/@entry.listId/@entry.taskId/delete" class="btn-close">削除</a>
+                            <!-- ./ポップアップの中身　ここまで -->
+                        </div>
+                        <!--                        <label for="popup-on"><div class="btn-close">閉じる</div></label>-->
+                    </div>
+            </div>
+        </td>
+
     </tr>
 }
 
 @main("Mother"){
+
+    <!--タスク検索-->
+    <div class="w3-row">
+        <div class="w3-half">
+            <h4>タスク検索</h4>
+        </div>
+    </div>
+    <table id="task-search" class="w3-table w3-border">
+        <tr>
+            <th>タスク名</th>
+            <td>
+                <form action="/lists/@listID" method="post">
+                    @CSRF.formField
+                    <input type="text" name="title"/>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>完了状態</th>
+            <td>
+                @CSRF.formField
+                まだ<input type="radio" name="isDone" value="true" required/>
+                やった<input type="radio" name="isDone" value="false" required/>
+            </td>
+            <td>
+                @CSRF.formField
+                <input type="submit" value="検索"/>
+                </form>
+            </td>
+            <td>
+                <div class="btn-border-mini">
+                    <a href="/lists/@listID">全タスク</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <br>
     <div class="w3-row">
         <div class="w3-half">
             <h3>登録済みタスク</h3>
         </div>
         <div class="w3-left">
             <a href="/lists/@listID/add"><span class="w3-button w3-green">新規登録</span></a>
+        </div>
+        <div class="w3-right">
+            <a href="/lists/@listID/share"><span class="w3-button w3-green">共有</span></a>
         </div>
     </div>
     @if(tasks.nonEmpty) {
@@ -76,6 +144,8 @@
                     <th>放送日</th>
                 }
             }
+            <th>完了状態</th>
+            <th></th>
         </tr>
         @for(entry <- tasks) {
             @entryRow(entry)

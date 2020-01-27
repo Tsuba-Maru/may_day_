@@ -1,0 +1,13 @@
+
+@(listId: Int)(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Mother"){
+<form action="/lists/@listId/share" method="POST">
+    @CSRF.formField
+    ユーザー名<br>
+    <input type="text" name="userName"><br>
+    <input type="submit" value="共有"><br>
+</form>
+}

@@ -23,7 +23,10 @@
     }
 
     @description<textarea name="description" value=@task.description ></textarea><br>
-        @deadline @task.deadYear 年 @task.deadMonth 月 @task.deadDay 日 <a href="#" class="btn-border-mini" id="edit-deadline">@deadline 編集</a>
+        @if(deadline!=null){
+            @deadline @task.deadYear 年 @task.deadMonth 月 @task.deadDay 日 <a href="#" class="btn-border-mini" id="edit-deadline">@deadline 編集</a>
+        }
+
         <div class="year-month-day"></div>
         <div class="default-date">
             <input type="hidden" name="year" value=@task.deadYear>

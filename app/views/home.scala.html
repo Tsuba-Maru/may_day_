@@ -1,5 +1,7 @@
-@(entries: Seq[models.List])(notifications: Seq[models.Task])(implicit request: RequestHeader)
-
+@(entries: Seq[models.List])(nearDeadline: Seq[models.Task])(pastDeadline: Seq[models.Task])(implicit request: RequestHeader)
+@import util.Random
+@import java.time.LocalTime
+@userId = @{request.session.get("userId").getOrElse("")}
 @entryRow(entry: models.List) = {
     <tr id="@entry.listId">
         <td class="listName"><a href="/lists/@entry.listId">@entry.listName</a></td>
@@ -36,7 +38,8 @@
 
 @notificationRow(notification: models.Task) = {
     <tr id="@notification.taskId">
-        <td class="name1"><a href="/lists/@notification.listId">@notification.name1</a></td>
+        <td class="name1"><a href="/lists/@notification.listId/@notification.taskId/edit">@notification.name1</a></td>
+        <td class="deadline">@notification.deadYear 年 @notification.deadMonth 月 @notification.deadDay 日</td>
     </tr>
 }
 
@@ -64,21 +67,50 @@
     </div>
 
 <!--通知欄-->
-    @if(notifications.nonEmpty){
-        <table id="notifications" class="w3-table w3-striped w3-border">
+<div class="w3-row">
+    <div class="w3-half">
+        <h3>通知</h3>
+    </div>
+</div>
+    @if(nearDeadline.nonEmpty){
+        <table id="nearDeadline" class="w3-table w3-striped w3-border">
             <tr>
                 <th>タスク名</th>
-                <th>残り日数</th>
+                <th>締切日</th>
             </tr>
-            @for(notification <- notifications){
+            @for(notification <- nearDeadline){
                 @notificationRow(notification)
             }
         </table>
     }else{
         <p>新しい通知はありません</p>
     }
+<div class="w3-row">
+    <div class="w3-half">
+        <h3>締切超過</h3>
+    </div>
+</div>
+    @if(pastDeadline.nonEmpty){
+        <table id="pastDeadline" class="w3-table w3-striped w3-border">
+            <tr class="w3-red">
+                <th>タスク名</th>
+                <th>締切日</th>
+            </tr>
+            @for(notification <- pastDeadline){
+                @notificationRow(notification)
+            }
+        </table>
+    }else{
+        <p>締切を過ぎたタスクはありません</p>
+    }
+
 
 <!--リスト-->
+<div class="w3-row">
+    <div class="w3-half">
+        <h3>登録済みリスト</h3>
+    </div>
+</div>
     @if(entries.nonEmpty){
         <table id="lists-list" class="w3-table w3-striped w3-border">
             <tr>
@@ -94,4 +126,73 @@
         <p>登録されたリストはありません</p>
     }
 <!---->
+
+
+<div class="sticky">
+    @if(userId.toInt % 3 == 0){
+    <p><img src="@routes.Assets.versioned("images/sidebar_a.png")" width="280px" height="480px"></p>
+    <div class="char">
+        @Random.nextInt(2) match{
+        case 0 => {
+        @LocalTime.now().getHour() match{
+        case 6|7|8|9|10|11|12     => {<p>おはよう！</p>}
+        case 13|14|15|16|17|18|19 => {<p>もうお昼よ！</p>}
+        case _                    => {<p>おかえりなさい</p>}
+        }
+        }
+        case 1 => {
+        @LocalTime.now().getHour() match{
+        case 12|13|14|18|19|20 => {<p>体調崩してない？</p>}
+        case 23|0|1|2|3        => {<p>そろそろ寝なさい！</p>}
+        case _                 => {<p>今日も一日頑張って！</p>}
+        }
+        }
+        }
+    </div>
+    }
+
+    @if(userId.toInt % 3 ==  1){
+    <p><img src="@routes.Assets.versioned("images/sidebar.png")" width="280px" height="480px"></p>
+    <div class="char">
+        @Random.nextInt(2) match{
+        case 0 => {
+        @LocalTime.now().getHour() match{
+        case 6|7|8|9|10|11|12     => {<p>おはようございます！</p>}
+        case 13|14|15|16|17|18|19 => {<p>こんにちは！</p>}
+        case _                    => {<p>こんばんは！</p>}
+        }
+        }
+        case 1 => {
+        @LocalTime.now().getHour() match{
+        case 12|13|14|18|19|20 => {<p>ご飯はちゃんと食べてますか？</p>}
+        case 23|0|1|2|3        => {<p>そろそろ寝ませんか？</p>}
+        case _                 => {<p>今日も一日頑張りましょう！</p>}
+        }
+        }
+        }
+    </div>
+    }
+
+    @if(userId.toInt % 3 == 2){
+    <p><img src="@routes.Assets.versioned("images/sidebar_k.png")" width="280px" height="480px"></p>
+    <div class="char">
+        @Random.nextInt(2) match{
+        case 0 => {
+        @LocalTime.now().getHour() match{
+        case 6|7|8|9|10|11|12     => {<p>おはようさん！</p>}
+        case 13|14|15|16|17|18|19 => {<p>こんちは！</p>}
+        case _                    => {<p>まいど！</p>}
+        }
+        }
+        case 1 => {
+        @LocalTime.now().getHour() match{
+        case 12|13|14|18|19|20 => {<p>調子、どや？</p>}
+        case 23|0|1|2|3        => {<p>そろそろ寝とったら？</p>}
+        case _                 => {<p>おかんに任しとき！</p>}
+        }
+        }
+        }
+    </div>
+    }
+</div>
 }
