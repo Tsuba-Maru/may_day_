@@ -3,8 +3,7 @@ package controllers
 import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
-import models.{Task, Tasks}
-import models.{User, Users}
+import models._
 
 /**
   * Userコントローラ
@@ -35,12 +34,15 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
           Ok(views.html.signupForm(1)(request))
             .withSession(request.session + ("userName" -> userName) + ("password" -> password))
         case None =>
-          val user = User(userName, password, true)
-          Ok(views.html.signupConfirm(userName)(request))
-            .withSession(request.session + ("userName" -> userName) + ("password" -> password))
+          users.getMaxID match {   //お母さんを表示
+            case Some(userId) =>
+              Ok(views.html.signupConfirm(userName)(userId + 1)(request))
+                .withSession(request.session + ("userName" -> userName) + ("password" -> password))
+            case None =>
+              Redirect("/")
+          }
       }
     }).getOrElse[Result](Redirect("/"))
-
   }
 
   def signupComplete = Action { request => //登録をする
@@ -65,7 +67,7 @@ class UserController @Inject()(tasks: Tasks)(users: Users)(cc: ControllerCompone
           if (!user.isActive) { //退会していないかどうか
             Ok(views.html.signinError("このユーザーは退会済みです"))
           } else if (utility.Digest.apply(password) == user.password) { //ログイン成功
-            Redirect("/lists").withNewSession.withSession("userId" -> user.userId.toString)
+            Redirect("/lists").withNewSession.withSession(("userId" -> user.userId.toString))
           } else {
             Ok(views.html.signinError("パスワードが違います"))
           }
