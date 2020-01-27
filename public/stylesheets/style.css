@@ -50,10 +50,10 @@ a.top-page{
 /* hrefボタン(小) */
 .btn-border-mini {
   display: inline-block;
-  max-width: 100px;
+  max-width: 180px;
   text-align: left;
   border: 2px solid #9ec34b;
-  font-size: 10px;
+  font-size: 16px;
   color: #9ec34b;
   text-decoration: none;
   font-weight: bold;
@@ -174,6 +174,7 @@ input[type="submit"]:hover{
   width: 30vw;
   height: 20vw;
   overflow-y: scroll;
+  z-index: 10000;
 }
 /* チェックボックスの初期設定 */
 #popup-on{
@@ -218,28 +219,41 @@ input[type="submit"]:hover{
   text-align: center;
 }
 
-/* ポップアップの内容 */
-.popup-content{
-  margin: 40px auto 40px auto;
-  width: 90%;
-}
 
 /* サイドバー */
 .sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 300px;
-  text-align: right;
+  position: absolute;
+  top: 0%;
+  left: 30%;
+  width: 140px;
 }
 
 .char {
  position: absolute;
- top: 7%;
- left: 87.8%;
+ top: 13%;
+ left: 42%;
  color: #000;
- /*background: rgba(0,0,0,.6);*/
- width: 150px;
- padding: 1em 0;
- font-size: 1.2em;
+ margin:0;
+ padding:0;
+ width: 75px;
+ font-size: 0.75em;
  text-align: center;
+}
+
+.char2 {
+ position: absolute;
+ top: 12%;
+ left: 36%;
+ color: #000;
+ margin:0;
+ padding:0;
+ width: 90px;
+ font-size: 0.6em;
+ text-align: center;
+}
+
+/* ポップアップの内容 */
+.popup-content{
+  margin: 40px auto 40px auto;
+  width: 90%;
 }
