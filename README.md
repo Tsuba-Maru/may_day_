@@ -2,10 +2,10 @@
 - quinque
 
 ### チームメンバーおよびそれぞれの役割
-- 御喜家 奈波(github: nachikobi)
-- 金子 真柚(github: kaneko1204)
+- ***
+- ***
 - 丸山 翼(github: TsubasaMaruyama)
-- 張 新宇(github: zhxyxxx)
+- ***
 
 ### 開発するアプリケーションの概要
 1. アプリケーション名  
