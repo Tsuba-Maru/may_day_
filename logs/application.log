@@ -1,26 +1,129 @@
-2019-10-24 21:04:29,410 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-4 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-01-28 00:49:24,979 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-20 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.gzip.GzipFilter
 
-2019-10-24 21:04:29,426 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-4 - Application started (Dev) (no global state)
-2019-10-24 21:04:31,075 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-3 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-01-28 00:49:24,988 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-20 - Application started (Dev) (no global state)
+2020-01-28 00:49:25,978 [ERROR] from application in application-akka.actor.default-dispatcher-5 - 
 
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 21:04:31,079 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-3 - Application started (Dev) (no global state)
-2019-10-24 21:05:11,321 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-9 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 21:05:11,336 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-9 - Application started (Dev) (no global state)
-2019-10-24 22:54:12,559 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-17 - 
-
-! @7didg0lh3 - Internal server error, for (GET) [/] ->
+! @7ej30iggb - Internal server error, for (GET) [/] ->
  
-play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of play.api.libs.json.Reads is available for java.sql.Timestamp in the implicit scope (Hint: if declared in the same file, make sure it's declared before)]
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[IllegalStateException: Trying to materialize stream after materializer has been shutdown]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:351)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:267)
+	at play.core.server.AkkaHttpServer$$anonfun$1.applyOrElse(AkkaHttpServer.scala:448)
+	at play.core.server.AkkaHttpServer$$anonfun$1.applyOrElse(AkkaHttpServer.scala:446)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:453)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:94)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: java.lang.IllegalStateException: Trying to materialize stream after materializer has been shutdown
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:457)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:450)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:443)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:629)
+	at akka.stream.scaladsl.Source.runWith(Source.scala:106)
+	at akka.stream.scaladsl.Source.runFold(Source.scala:117)
+	at play.filters.gzip.GzipFilter.compressStrictEntity(GzipFilter.scala:146)
+	at play.filters.gzip.GzipFilter.play$filters$gzip$GzipFilter$$handleResult(GzipFilter.scala:85)
+	at play.filters.gzip.GzipFilter$$anon$1.$anonfun$apply$1(GzipFilter.scala:66)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:184)
+	at scala.util.Try$.apply(Try.scala:212)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:184)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:85)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:85)
+	at play.api.libs.streams.StrictAccumulator.run(Accumulator.scala:219)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:441)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:447)
+	... 11 common frames omitted
+2020-01-28 00:49:26,063 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-14 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.gzip.GzipFilter
+
+2020-01-28 00:49:26,068 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-14 - Application started (Dev) (no global state)
+2020-01-28 00:49:26,069 [ERROR] from application in application-akka.actor.default-dispatcher-4 - 
+
+! @7ej30igjo - Internal server error, for (GET) [/assets/stylesheets/style.css] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[IllegalStateException: Trying to materialize stream after materializer has been shutdown]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:351)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:267)
+	at play.core.server.AkkaHttpServer$$anonfun$1.applyOrElse(AkkaHttpServer.scala:448)
+	at play.core.server.AkkaHttpServer$$anonfun$1.applyOrElse(AkkaHttpServer.scala:446)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:453)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:94)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: java.lang.IllegalStateException: Trying to materialize stream after materializer has been shutdown
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:457)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:450)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:443)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:629)
+	at akka.stream.scaladsl.Source.runWith(Source.scala:106)
+	at akka.stream.scaladsl.Source.runFold(Source.scala:117)
+	at play.filters.gzip.GzipFilter.compressStrictEntity(GzipFilter.scala:146)
+	at play.filters.gzip.GzipFilter.play$filters$gzip$GzipFilter$$handleResult(GzipFilter.scala:91)
+	at play.filters.gzip.GzipFilter$$anon$1.$anonfun$apply$1(GzipFilter.scala:66)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:184)
+	at scala.util.Try$.apply(Try.scala:212)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:184)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:85)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:85)
+	at play.api.libs.streams.StrictAccumulator.run(Accumulator.scala:219)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:441)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:447)
+	... 11 common frames omitted
+2020-01-28 00:54:16,526 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-10 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.gzip.GzipFilter
+
+2020-01-28 00:54:16,528 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-10 - Application started (Dev) (no global state)
+2020-01-28 01:27:03,003 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=14m16s16ms).
+2020-01-28 01:27:20,936 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-57 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.gzip.GzipFilter
+
+2020-01-28 01:27:20,937 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-57 - Application started (Dev) (no global state)
+2020-01-28 01:33:52,572 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-66 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.gzip.GzipFilter
+
+2020-01-28 01:33:52,573 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-66 - Application started (Dev) (no global state)
+2020-01-28 01:38:10,851 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-72 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.gzip.GzipFilter
+
+2020-01-28 01:38:10,853 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-72 - Application started (Dev) (no global state)
+2020-01-28 01:38:41,105 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-75 - 
+
+! @7ej374k2a - Internal server error, for (GET) [/lists/create] ->
+ 
+play.sbt.PlayExceptions$CompilationException: Compilation error[not found: value pastDeadlineDeadline]
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
 	at scala.Option.map(Option.scala:230)
@@ -34,7 +137,7 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of p
 	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
 	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
 	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
 	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
 	at play.runsupport.Reloader.reload(Reloader.scala:501)
 	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
@@ -60,11 +163,11 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of p
 	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
 	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
 	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:54:16,954 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-13 - 
+2020-01-28 01:38:41,349 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-71 - 
 
-! @7didg1290 - Internal server error, for (GET) [/assets/javascript/script.js] ->
+! @7ej374kcd - Internal server error, for (GET) [/favicon.ico] ->
  
-play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of play.api.libs.json.Reads is available for java.sql.Timestamp in the implicit scope (Hint: if declared in the same file, make sure it's declared before)]
+play.sbt.PlayExceptions$CompilationException: Compilation error[not found: value pastDeadlineDeadline]
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
 	at scala.Option.map(Option.scala:230)
@@ -78,7 +181,7 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of p
 	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
 	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
 	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
 	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
 	at play.runsupport.Reloader.reload(Reloader.scala:501)
 	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
@@ -104,224 +207,28 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[No instance of p
 	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
 	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
 	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:54:43,353 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-13 - 
-
-! @7didg2fa9 - Internal server error, for (GET) [/] ->
- 
-play.sbt.PlayExceptions$CompilationException: Compilation error[not enough arguments for method apply: (implicit request: play.api.mvc.RequestHeader)play.twirl.api.HtmlFormat.Appendable in object ajax.
-Unspecified value parameter request.]
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.$anonfun$taskFailureHandler$1(PlayReload.scala:41)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.taskFailureHandler(PlayReload.scala:36)
-	at play.sbt.run.PlayReload$.compileFailure(PlayReload.scala:29)
-	at play.sbt.run.PlayReload$.$anonfun$compile$3(PlayReload.scala:64)
-	at scala.util.Either$LeftProjection.map(Either.scala:573)
-	at play.sbt.run.PlayReload$.compile(PlayReload.scala:64)
-	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
-	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
-	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
-	at play.runsupport.Reloader.reload(Reloader.scala:501)
-	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
-	at play.core.server.AkkaHttpServer.handleRequest(AkkaHttpServer.scala:304)
-	at play.core.server.AkkaHttpServer.$anonfun$createServerBinding$1(AkkaHttpServer.scala:189)
-	at akka.stream.impl.fusing.MapAsync$$anon$30.onPush(Ops.scala:1261)
-	at akka.stream.impl.fusing.GraphInterpreter.processPush(GraphInterpreter.scala:523)
-	at akka.stream.impl.fusing.GraphInterpreter.execute(GraphInterpreter.scala:409)
-	at akka.stream.impl.fusing.GraphInterpreterShell.runBatch(ActorGraphInterpreter.scala:606)
-	at akka.stream.impl.fusing.GraphInterpreterShell$AsyncInput.execute(ActorGraphInterpreter.scala:485)
-	at akka.stream.impl.fusing.GraphInterpreterShell.processEvent(ActorGraphInterpreter.scala:581)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.akka$stream$impl$fusing$ActorGraphInterpreter$$processEvent(ActorGraphInterpreter.scala:749)
-	at akka.stream.impl.fusing.ActorGraphInterpreter$$anonfun$receive$1.applyOrElse(ActorGraphInterpreter.scala:764)
-	at akka.actor.Actor.aroundReceive(Actor.scala:539)
-	at akka.actor.Actor.aroundReceive$(Actor.scala:537)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.aroundReceive(ActorGraphInterpreter.scala:671)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:612)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:581)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:268)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:229)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:241)
-	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:54:44,925 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-12 - 
-
-! @7didg2hil - Internal server error, for (GET) [/assets/javascript/script.js] ->
- 
-play.sbt.PlayExceptions$CompilationException: Compilation error[not enough arguments for method apply: (implicit request: play.api.mvc.RequestHeader)play.twirl.api.HtmlFormat.Appendable in object ajax.
-Unspecified value parameter request.]
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.$anonfun$taskFailureHandler$1(PlayReload.scala:41)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.taskFailureHandler(PlayReload.scala:36)
-	at play.sbt.run.PlayReload$.compileFailure(PlayReload.scala:29)
-	at play.sbt.run.PlayReload$.$anonfun$compile$3(PlayReload.scala:64)
-	at scala.util.Either$LeftProjection.map(Either.scala:573)
-	at play.sbt.run.PlayReload$.compile(PlayReload.scala:64)
-	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
-	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
-	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
-	at play.runsupport.Reloader.reload(Reloader.scala:501)
-	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
-	at play.core.server.AkkaHttpServer.handleRequest(AkkaHttpServer.scala:304)
-	at play.core.server.AkkaHttpServer.$anonfun$createServerBinding$1(AkkaHttpServer.scala:189)
-	at akka.stream.impl.fusing.MapAsync$$anon$30.onPush(Ops.scala:1261)
-	at akka.stream.impl.fusing.GraphInterpreter.processPush(GraphInterpreter.scala:523)
-	at akka.stream.impl.fusing.GraphInterpreter.execute(GraphInterpreter.scala:409)
-	at akka.stream.impl.fusing.GraphInterpreterShell.runBatch(ActorGraphInterpreter.scala:606)
-	at akka.stream.impl.fusing.GraphInterpreterShell$AsyncInput.execute(ActorGraphInterpreter.scala:485)
-	at akka.stream.impl.fusing.GraphInterpreterShell.processEvent(ActorGraphInterpreter.scala:581)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.akka$stream$impl$fusing$ActorGraphInterpreter$$processEvent(ActorGraphInterpreter.scala:749)
-	at akka.stream.impl.fusing.ActorGraphInterpreter$$anonfun$receive$1.applyOrElse(ActorGraphInterpreter.scala:764)
-	at akka.actor.Actor.aroundReceive(Actor.scala:539)
-	at akka.actor.Actor.aroundReceive$(Actor.scala:537)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.aroundReceive(ActorGraphInterpreter.scala:671)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:612)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:581)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:268)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:229)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:241)
-	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:54:55,545 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-16 - 
-
-! @7didg37b7 - Internal server error, for (GET) [/] ->
- 
-play.sbt.PlayExceptions$CompilationException: Compilation error[value entry is not a member of controllers.formapp.FormappAjaxController]
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.$anonfun$taskFailureHandler$1(PlayReload.scala:41)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.taskFailureHandler(PlayReload.scala:36)
-	at play.sbt.run.PlayReload$.compileFailure(PlayReload.scala:29)
-	at play.sbt.run.PlayReload$.$anonfun$compile$3(PlayReload.scala:64)
-	at scala.util.Either$LeftProjection.map(Either.scala:573)
-	at play.sbt.run.PlayReload$.compile(PlayReload.scala:64)
-	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
-	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
-	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
-	at play.runsupport.Reloader.reload(Reloader.scala:501)
-	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
-	at play.core.server.AkkaHttpServer.handleRequest(AkkaHttpServer.scala:304)
-	at play.core.server.AkkaHttpServer.$anonfun$createServerBinding$1(AkkaHttpServer.scala:189)
-	at akka.stream.impl.fusing.MapAsync$$anon$30.onPush(Ops.scala:1261)
-	at akka.stream.impl.fusing.GraphInterpreter.processPush(GraphInterpreter.scala:523)
-	at akka.stream.impl.fusing.GraphInterpreter.execute(GraphInterpreter.scala:409)
-	at akka.stream.impl.fusing.GraphInterpreterShell.runBatch(ActorGraphInterpreter.scala:606)
-	at akka.stream.impl.fusing.GraphInterpreterShell$AsyncInput.execute(ActorGraphInterpreter.scala:485)
-	at akka.stream.impl.fusing.GraphInterpreterShell.processEvent(ActorGraphInterpreter.scala:581)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.akka$stream$impl$fusing$ActorGraphInterpreter$$processEvent(ActorGraphInterpreter.scala:749)
-	at akka.stream.impl.fusing.ActorGraphInterpreter$$anonfun$receive$1.applyOrElse(ActorGraphInterpreter.scala:764)
-	at akka.actor.Actor.aroundReceive(Actor.scala:539)
-	at akka.actor.Actor.aroundReceive$(Actor.scala:537)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.aroundReceive(ActorGraphInterpreter.scala:671)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:612)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:581)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:268)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:229)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:241)
-	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:54:56,913 [ERROR] from application in play-dev-mode-akka.actor.default-dispatcher-14 - 
-
-! @7didg39bn - Internal server error, for (GET) [/assets/javascript/script.js] ->
- 
-play.sbt.PlayExceptions$CompilationException: Compilation error[value entry is not a member of controllers.formapp.FormappAjaxController]
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:37)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.$anonfun$taskFailureHandler$1(PlayReload.scala:41)
-	at scala.Option.map(Option.scala:230)
-	at play.sbt.run.PlayReload$.taskFailureHandler(PlayReload.scala:36)
-	at play.sbt.run.PlayReload$.compileFailure(PlayReload.scala:29)
-	at play.sbt.run.PlayReload$.$anonfun$compile$3(PlayReload.scala:64)
-	at scala.util.Either$LeftProjection.map(Either.scala:573)
-	at play.sbt.run.PlayReload$.compile(PlayReload.scala:64)
-	at play.sbt.run.PlayRun$.$anonfun$playRunTask$4(PlayRun.scala:80)
-	at play.runsupport.Reloader.$anonfun$reload$1(Reloader.scala:501)
-	at play.runsupport.Reloader$$anon$1.run(Reloader.scala:58)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:64)
-	at play.runsupport.Reloader.reload(Reloader.scala:501)
-	at play.core.server.DevServerStart$$anon$1.get(DevServerStart.scala:143)
-	at play.core.server.AkkaHttpServer.handleRequest(AkkaHttpServer.scala:304)
-	at play.core.server.AkkaHttpServer.$anonfun$createServerBinding$1(AkkaHttpServer.scala:189)
-	at akka.stream.impl.fusing.MapAsync$$anon$30.onPush(Ops.scala:1261)
-	at akka.stream.impl.fusing.GraphInterpreter.processPush(GraphInterpreter.scala:523)
-	at akka.stream.impl.fusing.GraphInterpreter.execute(GraphInterpreter.scala:409)
-	at akka.stream.impl.fusing.GraphInterpreterShell.runBatch(ActorGraphInterpreter.scala:606)
-	at akka.stream.impl.fusing.GraphInterpreterShell$AsyncInput.execute(ActorGraphInterpreter.scala:485)
-	at akka.stream.impl.fusing.GraphInterpreterShell.processEvent(ActorGraphInterpreter.scala:581)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.akka$stream$impl$fusing$ActorGraphInterpreter$$processEvent(ActorGraphInterpreter.scala:749)
-	at akka.stream.impl.fusing.ActorGraphInterpreter$$anonfun$receive$1.applyOrElse(ActorGraphInterpreter.scala:764)
-	at akka.actor.Actor.aroundReceive(Actor.scala:539)
-	at akka.actor.Actor.aroundReceive$(Actor.scala:537)
-	at akka.stream.impl.fusing.ActorGraphInterpreter.aroundReceive(ActorGraphInterpreter.scala:671)
-	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:612)
-	at akka.actor.ActorCell.invoke(ActorCell.scala:581)
-	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:268)
-	at akka.dispatch.Mailbox.run(Mailbox.scala:229)
-	at akka.dispatch.Mailbox.exec(Mailbox.scala:241)
-	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2019-10-24 22:55:20,787 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-14 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-01-28 01:38:52,606 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-72 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.gzip.GzipFilter
 
-2019-10-24 22:55:20,791 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-14 - Application started (Dev) (no global state)
-2019-10-24 22:57:13,521 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-13 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-01-28 01:38:52,608 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-72 - Application started (Dev) (no global state)
+2020-01-28 01:41:00,728 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-73 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.gzip.GzipFilter
 
-2019-10-24 22:57:13,524 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-13 - Application started (Dev) (no global state)
-2019-10-24 23:36:53,858 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-84 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-01-28 01:41:00,730 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-73 - Application started (Dev) (no global state)
+2020-01-28 01:42:41,703 [WARN] from play.filters.CSRF in application-akka.actor.default-dispatcher-20 - [CSRF] Check failed because no token found in headers for /signin
+2020-01-28 01:42:45,010 [WARN] from play.filters.CSRF in application-akka.actor.default-dispatcher-20 - [CSRF] Check failed because no token found in headers for /signin
+2020-01-28 01:43:33,837 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-73 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.gzip.GzipFilter
 
-2019-10-24 23:36:53,859 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-84 - Application started (Dev) (no global state)
-2019-10-24 23:37:49,353 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-80 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 23:37:49,354 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-80 - Application started (Dev) (no global state)
-2019-10-24 23:38:07,889 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-80 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 23:38:07,891 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-80 - Application started (Dev) (no global state)
-2019-10-24 23:38:13,628 [WARN] from play.filters.CSRF in application-akka.actor.default-dispatcher-4 - [CSRF] Check failed because no token found in headers for /formapp/register/name
-2019-10-24 23:39:45,220 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-90 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 23:39:45,222 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-90 - Application started (Dev) (no global state)
-2019-10-24 23:41:25,840 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-86 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.gzip.GzipFilter
-
-2019-10-24 23:41:25,842 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-86 - Application started (Dev) (no global state)
+2020-01-28 01:43:33,839 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-73 - Application started (Dev) (no global state)
+2020-01-28 05:20:54,266 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=3h20s76ms).
+2020-01-28 09:21:10,672 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=4h16s361ms).
+2020-01-28 11:00:32,032 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=1h39m21s396ms).
+2020-01-28 11:02:48,054 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=1m46s3ms).
+2020-01-28 11:22:38,833 [WARN] from com.zaxxer.hikari.pool.HikariPool in db housekeeper - db - Thread starvation or clock leap detected (housekeeper delta=11m49s3ms).

@@ -162,7 +162,7 @@
     @Math.floor(Math.random() * 2)  match{
     case 0 => {
     @if(nearDeadline.nonEmpty){
-    <p class="char2">通知あるわよ！<p>確認して！</p>
+    <p class="char2">通知あるわよ！<br>確認して！</br>
     }else{
     @LocalTime.now().getHour() match{
     case 8|9|10|11|12     => {<p class="char">調子はどう？</p>}

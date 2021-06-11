@@ -17,6 +17,7 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(users: Users)(l
       userId <- request.session.get("userId")
     } yield {
       var entries = lists.findByUserId(userId.toInt)
+
       /***********共有用***********/
       val linkList = links.findByUserId(userId.toInt)
       linkList.foreach { e =>
@@ -26,28 +27,52 @@ class MotherListController @Inject()(lists: Lists)(tasks: Tasks)(users: Users)(l
         }
       }
       entries = entries.distinct
+
       /****************************/
+
+
       val today: LocalDate        = LocalDate.now()
       var pastDeadline: Seq[Task] = Seq.empty
       var nearDeadline: Seq[Task] = Seq.empty
 
-      for (i <- 0 to 2) { //締め切りが近いもの（今日〜i日後）
-        for (entry <- entries) {
-          val taskEntry =
-            tasks.listFromListID(entry.listId).filter(task => (task.deadYear.toInt != 0) && (!task.isDone))
-          nearDeadline ++= taskEntry.filter(
-            task =>
-              LocalDate.of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt).equals(today.plusDays(i))
-          )
-        }
+      for (entry <- entries) {
+        val taskEntry = tasks.listFromListID(entry.listId).filter(task => (task.deadYear.toInt != 0) && (!task.isDone))
+        nearDeadline ++= taskEntry.filter(task =>
+          LocalDate.of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt)
+              .compareTo(today) >= 0 ||
+            LocalDate
+              .of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt)
+              .compareTo(today) < 2)
+        pastDeadline ++= taskEntry.filter(
+          task =>
+            LocalDate
+              .of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt)
+              .compareTo(today) < 0)
       }
 
-      for (entry <- entries) { //締め切りがすぎたもの
-        val taskEntry = tasks.listFromListID(entry.listId).filter(task => (task.deadYear.toInt != 0) && (!task.isDone))
-        pastDeadline ++= taskEntry.filter(
-          task => LocalDate.of(task.deadYear.toInt, task.deadMonth.toInt, task.deadDay.toInt).compareTo(today) < 0
-        )
-      }
+      nearDeadline = nearDeadline.sortWith(
+        (x, y) =>
+          x.deadYear.compareTo(y.deadYear) match {
+            case 0 =>
+              x.deadMonth.compareTo(y.deadMonth) match {
+                case 0 => x.deadDay.compareTo(y.deadDay) < 0
+                case c => c < 0
+              }
+            case c => c < 0
+          }
+      )
+
+      pastDeadline = pastDeadline.sortWith(
+        (x, y) =>
+          x.deadYear.compareTo(y.deadYear) match {
+            case 0 =>
+              x.deadMonth.compareTo(y.deadMonth) match {
+                case 0 => x.deadDay.compareTo(y.deadDay) < 0
+                case c => c < 0
+              }
+            case c => c < 0
+          }
+      )
 
       Ok(views.html.home(entries)(nearDeadline)(pastDeadline)(request)).withSession(request.session)
 

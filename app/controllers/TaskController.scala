@@ -11,16 +11,61 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
     * インデックスページを表示
     */
   def list(listId: Int) = Action { request =>
-    val entries  = tasks.listFromListID(listId)
-    val genreId  = lists.findByListId(listId).get.genre_id
-    Ok(views.html.list(entries)(genreId)(listId))
+    val entries = tasks.listFromListID(listId)
+    val genreId = lists.findByListId(listId).get.genreId
+    Ok(views.html.list(entries)(genreId)(listId)(request))
+  }
+
+  /**
+    * 検索機能
+    * タスク名は任意、完了状態は必須事項
+    */
+  def extract(listId: Int) = Action { implicit request =>
+    (for {
+      param  <- request.body.asFormUrlEncoded
+      title  <- param.get("title").flatMap(_.headOption)
+      isDone <- param.get("isDone").flatMap(_.headOption)
+    } yield {
+      val genreId = lists.findByListId(listId).get.genreId
+      if (title == "") {
+        val entries = tasks.findByIsDone(listId, !isDone.toBoolean)
+        Ok(views.html.list(entries)(genreId)(listId)(request))
+      } else {
+        val entries = tasks.search(listId, title, !isDone.toBoolean)
+        Ok(views.html.list(entries)(genreId)(listId)(request))
+      }
+    }).getOrElse[Result](Redirect(routes.TaskController.list(listId)))
+  }
+
+  def sort(listId: Int, sortItem: String) = Action { implicit request =>
+    val entries = tasks.listFromListID(listId)
+    var result  = Seq.empty[Task]
+    sortItem match {
+      case "name1" => result = entries.sortBy(_.name1.toLowerCase)
+      case "name2" => result = entries.sortBy(_.name2.toLowerCase)
+      case "deadline" =>
+        result = entries.sortWith(
+          (x, y) =>
+            x.deadYear.compareTo(y.deadYear) match {
+              case 0 =>
+                x.deadMonth.compareTo(y.deadMonth) match {
+                  case 0 => x.deadDay.compareTo(y.deadDay) < 0
+                  case c => c < 0
+                }
+              case c => c < 0
+            }
+        )
+      //case "isDone" => result = entries.sortBy(_.isDone)
+    }
+    val genreId = lists.findByListId(listId).get.genreId
+    Ok(views.html.list(result)(genreId)(listId)(request))
   }
 
   /**
     * タスク新規登録ページを表示
     */
   def register(listId: Int) = Action { implicit request =>
-    val genreId = lists.findByListId(listId).get.genre_id
+    val genreId = lists.findByListId(listId).get.genreId
     Ok(views.html.taskForm(genreId)(listId)(request))
   }
 
@@ -37,12 +82,7 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       month       <- param.get("month").flatMap(_.headOption)
       day         <- param.get("day").flatMap(_.headOption)
     } yield {
-      if (year!=null){
-        val deadline = year + "-" + month + "-" + day + " " + "12:00:00"
-        tasks.save(Task(listId, name1, name2, description, deadline, false))
-      } else {
-        tasks.save(Task(listId, name1, name2, description, null, false))
-      }
+      tasks.save(Task(listId, name1, name2, description, year, month, day, false))
       Redirect(routes.TaskController.list(listId)).withNewSession
     }).getOrElse[Result](Redirect("/lists/" + listId + "/add"))
   }
@@ -50,28 +90,28 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
   /**
     * 完了状態のみを変更
     */
-  def comp(taskId: Int, listId: Int) = Action {
+  def comp(listId: Int, taskId: Int) = Action {
     tasks.findByID(taskId) match {
       case Some(e) =>
-        var isDone = false
         if (e.isDone == false) {
-          isDone = true
+          val after = true
+          tasks.switchIsDone(taskId, after)
         } else {
-          isDone = false
+          val after = false
+          tasks.switchIsDone(taskId, after)
         }
-        tasks.switchIsDone(taskId, isDone)
       case None => NotFound(s"No entry for id=${taskId}")
     }
-    Redirect(routes.TaskController.list(listId)).withNewSession
+    Redirect(routes.TaskController.list(listId))
   }
 
   /**
     * タスク編集ページを表示
     */
-  def edit(listId: Int, taskId: Int) = Action { request =>
-    val genreId = lists.getFromListID.get.genre_id //Listモデルと擦り合わせて要変更
+  def edit(listId: Int, taskId: Int) = Action { implicit request =>
+    val genreId = lists.findByListId(listId).get.genreId
     tasks.findByID(taskId) match {
-      case Some(e) => Ok(views.html.editTask(e)(genreId)(listId))
+      case Some(e) => Ok(views.html.editTask(e)(genreId)(listId)(request))
       case None    => NotFound(s"No entry for id=${taskId}")
     }
   }
@@ -88,16 +128,11 @@ class TaskController @Inject()(tasks: Tasks)(lists: Lists)(cc: ControllerCompone
       year        <- param.get("year").flatMap(_.headOption)
       month       <- param.get("month").flatMap(_.headOption)
       day         <- param.get("day").flatMap(_.headOption)
-      isDone      <- param.get("isDone").flatMap(_.headOption)
     } yield {
-      if (year!=null){
-        val deadline = year + "-" + month + "-" + day + " " + "12:00:00"
-        tasks.save(Task(taskId, listId, name1, name2, description, deadline, null, isDone.toBoolean))
-      } else {
-        tasks.save(Task(taskId, listId, name1, name2, description, null, null, isDone.toBoolean))
-      }
+      val isDone = tasks.findByID(taskId).get.isDone
+      tasks.save(Task(taskId, listId, name1, name2, description, year, month, day, null, isDone))
       Redirect(routes.TaskController.list(listId)).withNewSession
-    }).getOrElse[Result](Redirect("/lists/" + listId + "/" + taskId + "edit"))
+    }).getOrElse[Result](Redirect("/lists/" + listId + "/" + taskId + "/edit"))
   }
 
   /**

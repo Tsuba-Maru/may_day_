@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/tsubasa/may_day_/conf/logback.xml,/Users/tsubasa/may_day_/target/scala-2.13/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/tsubasa/may_day_/conf/application.conf,/Users/tsubasa/may_day_/target/scala-2.13/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/tsubasa/may_day_/conf/routes,/Users/tsubasa/may_day_/target/scala-2.13/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/tsubasa/may_day_/conf/evolutions/default/1.sql,/Users/tsubasa/may_day_/target/scala-2.13/classes/evolutions/default/1.sql)[0m
